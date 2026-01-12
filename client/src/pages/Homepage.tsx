@@ -140,21 +140,6 @@ function Homepage() {
         </div>
       </section>
 
-      <section className="py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold text-gray-900 mb-6">
-            Prêt à simplifier vos réservations ?
-          </h2>
-          <p className="text-xl text-gray-600 mb-8">
-            Rejoignez des centaines d'entreprises qui font confiance à
-            EasyBooking
-          </p>
-          <button className="px-8 py-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg text-lg">
-            Démarrer maintenant
-          </button>
-        </div>
-      </section>
-
       <footer className="bg-gray-900 text-gray-400 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">
