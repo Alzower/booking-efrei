@@ -9,7 +9,7 @@ import "./Dashboard.css";
 export default function Dashboard() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
-  const handleDateClick = (info: any) => {
+  const handleDateClick = (info: { date: Date }) => {
     setSelectedDate(info.date);
   };
 
