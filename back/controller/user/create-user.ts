@@ -5,7 +5,11 @@ import { passwordIsValid } from "../../../helper/password-helper";
 
 export const createUser = async (req, res) => {
   try {
-    const { email, name, password } = req.body;
+    const { email, name, password, role } = req.body;
+
+    if (role && !["ADMIN"].includes(role)) {
+      return res.status(400).json({ error: "Rôle utilisateur invalide" });
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
