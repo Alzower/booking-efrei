@@ -123,17 +123,17 @@ function Homepage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-3 gap-8 text-center text-white">
             <div>
-              <div className="text-5xl font-bold mb-2">500+</div>
+              <div className="text-5xl font-bold mb-2">...</div>
               <div className="text-blue-100 text-lg">Salles disponibles</div>
             </div>
             <div>
-              <div className="text-5xl font-bold mb-2">10K+</div>
+              <div className="text-5xl font-bold mb-2">...</div>
               <div className="text-blue-100 text-lg">
                 Réservations mensuelles
               </div>
             </div>
             <div>
-              <div className="text-5xl font-bold mb-2">98%</div>
+              <div className="text-5xl font-bold mb-2">...</div>
               <div className="text-blue-100 text-lg">Satisfaction client</div>
             </div>
           </div>
