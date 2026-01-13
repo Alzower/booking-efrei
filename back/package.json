@@ -2,7 +2,6 @@
   "name": "back",
   "version": "1.0.0",
   "description": "booking class (cours efrei)",
-  "type": "module",
   "main": "index.ts",
   "scripts": {
     "dev": "nodemon ./index.ts",
