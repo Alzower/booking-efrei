@@ -10,7 +10,6 @@ function EditProfile() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [userId, setUserId] = useState("");
   const [formData, setFormData] = useState({
     email: "",
     firstName: "",
@@ -19,20 +18,18 @@ function EditProfile() {
 
   useEffect(() => {
     const token = authService.getToken();
-    const id = authService.getUserId();
-    if (!token || !id) {
+    if (!token) {
       navigate("/login");
       return;
     }
 
-    loadUserProfile(id);
+    loadUserProfile();
   }, [navigate]);
 
-  const loadUserProfile = async (id: string) => {
+  const loadUserProfile = async () => {
     try {
       setLoading(true);
-      const user = await userService.getCurrentUser(id);
-      setUserId(user.id);
+      const user = await userService.getCurrentUser();
       setFormData({
         email: user.email,
         firstName: user.firstName || "",
@@ -57,7 +54,7 @@ function EditProfile() {
 
     try {
       setSaving(true);
-      await userService.updateUser(userId, formData);
+      await userService.updateUser(formData);
       setSuccess("Profil mis à jour avec succès!");
       setTimeout(() => {
         navigate("/dashboard");

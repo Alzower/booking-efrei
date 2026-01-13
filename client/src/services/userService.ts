@@ -15,14 +15,14 @@ export interface UpdateUserData {
 }
 
 export const userService = {
-  async updateUser(id: string, data: UpdateUserData): Promise<User> {
+  async updateUser(data: UpdateUserData): Promise<User> {
     const token = localStorage.getItem("token");
 
     if (!token) {
       throw new Error("Non authentifié");
     }
 
-    const response = await fetch(`${API_URL}/users/${id}`, {
+    const response = await fetch(`${API_URL}/users/me`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -41,14 +41,14 @@ export const userService = {
     return response.json();
   },
 
-  async getCurrentUser(id: string): Promise<User> {
+  async getCurrentUser(): Promise<User> {
     const token = localStorage.getItem("token");
 
     if (!token) {
       throw new Error("Non authentifié");
     }
 
-    const response = await fetch(`${API_URL}/users/${id}`, {
+    const response = await fetch(`${API_URL}/users/me`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
