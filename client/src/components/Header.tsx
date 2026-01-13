@@ -74,6 +74,13 @@ function Header() {
                     >
                       Dashboard
                     </Link>
+                    <Link
+                      to="/profile/edit"
+                      onClick={() => setShowMenu(false)}
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                    >
+                      Modifier le profil
+                    </Link>
                     <button
                       onClick={handleLogout}
                       className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"

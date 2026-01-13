@@ -17,6 +17,7 @@ function Login() {
     try {
       const response = await authService.login({ email, password });
       authService.saveToken(response.token);
+      authService.saveUserId(response.user.id);
       navigate("/dashboard");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur de connexion");

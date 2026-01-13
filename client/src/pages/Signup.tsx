@@ -19,6 +19,7 @@ function Signup() {
       await authService.signup({ email, name, password });
       const loginResponse = await authService.login({ email, password });
       authService.saveToken(loginResponse.token);
+      authService.saveUserId(loginResponse.user.id);
       navigate("/dashboard");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur lors de l'inscription");

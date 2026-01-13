@@ -13,6 +13,11 @@ export interface SignupData {
 
 export interface LoginResponse {
   token: string;
+  user: {
+    id: string;
+    email: string;
+    role: string;
+  };
 }
 
 export interface SignupResponse {
@@ -67,7 +72,16 @@ export const authService = {
     return localStorage.getItem("token");
   },
 
+  saveUserId(userId: string): void {
+    localStorage.setItem("userId", userId);
+  },
+
+  getUserId(): string | null {
+    return localStorage.getItem("userId");
+  },
+
   removeToken(): void {
     localStorage.removeItem("token");
+    localStorage.removeItem("userId");
   },
 };
