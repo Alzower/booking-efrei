@@ -5,14 +5,16 @@ import { roomService } from "../services/roomService";
 import type { Reservation } from "../services/reservationService";
 import type { Room } from "../services/roomService";
 
-type ReservationStatus = "upcoming" | "past" | "ongoing";
+type ReservationStatus = "upcoming" | "past" | "ongoing" | "cancelled";
 
 interface ReservationWithStatus extends Reservation {
   status: ReservationStatus;
 }
 
 function HistoryPage() {
-  const [filter, setFilter] = useState<"all" | "upcoming" | "past">("all");
+  const [filter, setFilter] = useState<
+    "all" | "upcoming" | "cancelled" | "past"
+  >("all");
   const [reservations, setReservations] = useState<ReservationWithStatus[]>([]);
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
@@ -33,6 +35,10 @@ function HistoryPage() {
       const now = new Date();
       const reservationsWithStatus: ReservationWithStatus[] =
         reservationsData.map((reservation) => {
+          if (reservation.status === "cancelled") {
+            return { ...reservation, status: "cancelled" };
+          }
+
           const start = new Date(reservation.startTime);
           const end = new Date(reservation.endTime);
 
@@ -85,7 +91,7 @@ function HistoryPage() {
     });
   };
 
-  const getStatusBadge = (status: string) => {
+  const getStatusBadge = (status: ReservationStatus) => {
     switch (status) {
       case "past":
         return (
@@ -103,6 +109,12 @@ function HistoryPage() {
         return (
           <span className="px-3 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
             En cours
+          </span>
+        );
+      case "cancelled":
+        return (
+          <span className="px-3 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+            Annulée
           </span>
         );
       default:
@@ -126,7 +138,9 @@ function HistoryPage() {
     }
   };
 
-  const getCountByStatus = (status: "all" | "upcoming" | "past") => {
+  const getCountByStatus = (
+    status: "all" | "upcoming" | "past" | "cancelled"
+  ) => {
     if (status === "all") return reservations.length;
     return reservations.filter((r) => r.status === status).length;
   };
@@ -192,6 +206,16 @@ function HistoryPage() {
           >
             Passées ({getCountByStatus("past")})
           </button>
+          <button
+            onClick={() => setFilter("cancelled")}
+            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+              filter === "cancelled"
+                ? "bg-red-600 text-white"
+                : "bg-white text-gray-700 hover:bg-gray-100"
+            }`}
+          >
+            Annulées ({getCountByStatus("cancelled")})
+          </button>
         </div>
 
         {filteredReservations.length === 0 ? (
@@ -216,7 +240,11 @@ function HistoryPage() {
               {filter === "all"
                 ? "Vous n'avez pas encore de réservation."
                 : `Vous n'avez aucune réservation ${
-                    filter === "upcoming" ? "à venir" : "passée"
+                    filter === "upcoming"
+                      ? "à venir"
+                      : filter === "past"
+                      ? "passée"
+                      : "annulée"
                   }.`}
             </p>
           </div>
@@ -245,11 +273,6 @@ function HistoryPage() {
                                 {eq}
                               </span>
                             ))}
-                            {room.equipment.length > 3 && (
-                              <span className="px-2 py-0.5 bg-gray-200 text-gray-600 text-xs rounded">
-                                +{room.equipment.length - 3}
-                              </span>
-                            )}
                           </div>
                         )}
                       </div>
@@ -281,27 +304,6 @@ function HistoryPage() {
                           </p>
                         </div>
                       </div>
-
-                      {room && (
-                        <div className="flex items-center">
-                          <svg
-                            className="w-5 h-5 text-gray-400 mr-3"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                            />
-                          </svg>
-                          <p className="text-sm text-gray-600">
-                            Capacité: {room.capacity} personnes
-                          </p>
-                        </div>
-                      )}
                     </div>
 
                     {reservation.status === "upcoming" && (

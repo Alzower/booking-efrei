@@ -156,8 +156,8 @@ export default function Filter({
   if (!selectedDate) return null;
 
   return (
-    <div className="w-[400px] h-screen bg-white shadow-[-4px_0_15px_rgba(0,0,0,0.1)] flex flex-col animate-slide-in">
-      <div className="flex justify-between items-center p-8 border-b-2 border-gray-200 flex-shrink-0">
+    <div className="w-[400px] bg-white shadow-[-4px_0_15px_rgba(0,0,0,0.1)] flex flex-col animate-slide-in">
+      <div className="flex justify-between items-center p-8 border-b-2 border-gray-200 shrink-0">
         <h2 className="text-2xl font-semibold text-gray-800">
           Réserver une salle
         </h2>

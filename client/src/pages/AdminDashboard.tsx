@@ -44,7 +44,9 @@ function AdminDashboard() {
       setRooms(data);
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Erreur lors du chargement des salles"
+        err instanceof Error
+          ? err.message
+          : "Erreur lors du chargement des salles"
       );
     } finally {
       setLoading(false);
@@ -69,7 +71,9 @@ function AdminDashboard() {
       await loadRooms();
       setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur lors de la création");
+      setError(
+        err instanceof Error ? err.message : "Erreur lors de la création"
+      );
     }
   };
 
@@ -88,7 +92,9 @@ function AdminDashboard() {
       await loadRooms();
       setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur lors de la mise à jour");
+      setError(
+        err instanceof Error ? err.message : "Erreur lors de la mise à jour"
+      );
     }
   };
 
@@ -103,7 +109,9 @@ function AdminDashboard() {
       await loadRooms();
       setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur lors de la suppression");
+      setError(
+        err instanceof Error ? err.message : "Erreur lors de la suppression"
+      );
     }
   };
 
@@ -162,7 +170,9 @@ function AdminDashboard() {
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
               Administration - Gestion des salles
             </h1>
-            <p className="text-gray-600">Créez et gérez les salles de réservation</p>
+            <p className="text-gray-600">
+              Créez et gérez les salles de réservation
+            </p>
           </div>
           <button
             onClick={() => setShowCreateModal(true)}
@@ -292,15 +302,16 @@ function AdminDashboard() {
           </div>
         )}
 
-        {/* Modal Create/Edit */}
         {(showCreateModal || editingRoom) && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">
                 {editingRoom ? "Modifier la salle" : "Créer une salle"}
               </h2>
 
-              <form onSubmit={editingRoom ? handleUpdateRoom : handleCreateRoom}>
+              <form
+                onSubmit={editingRoom ? handleUpdateRoom : handleCreateRoom}
+              >
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -346,7 +357,8 @@ function AdminDashboard() {
                         value={equipmentInput}
                         onChange={(e) => setEquipmentInput(e.target.value)}
                         onKeyPress={(e) =>
-                          e.key === "Enter" && (e.preventDefault(), addEquipment())
+                          e.key === "Enter" &&
+                          (e.preventDefault(), addEquipment())
                         }
                         className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="Ex: Projecteur"
