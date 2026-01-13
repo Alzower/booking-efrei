@@ -26,8 +26,11 @@ export default function EventDetails({
   const startDate = new Date(reservation.startTime);
   const endDate = new Date(reservation.endTime);
 
-  const roomColors = JSON.parse(localStorage.getItem("roomColors") || "{}");
-  const eventColor = roomColors[reservation.roomId] || "#3b82f6";
+  const reservationColors = JSON.parse(
+    localStorage.getItem("reservationColors") || "{}"
+  );
+
+  const eventColor = reservationColors[reservation.id] || "#3b82f6";
 
   const handleDelete = async () => {
     if (
@@ -40,6 +43,13 @@ export default function EventDetails({
       setDeleting(true);
       setError("");
       await reservationService.deleteReservation(reservation.id);
+
+      const reservationColors = JSON.parse(
+        localStorage.getItem("reservationColors") || "{}"
+      );
+      delete reservationColors[reservation.id];
+      localStorage.setItem("reservationColors", JSON.stringify(reservationColors));
+
       setSuccess("Réservation annulée avec succès!");
 
       if (onReservationDeleted) {

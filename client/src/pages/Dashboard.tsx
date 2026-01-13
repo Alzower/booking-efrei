@@ -69,8 +69,11 @@ export default function Dashboard() {
     const start = new Date(reservation.startTime);
     const end = new Date(reservation.endTime);
 
-    const roomColors = JSON.parse(localStorage.getItem("roomColors") || "{}");
-    const backgroundColor = roomColors[reservation.roomId] || "#3b82f6";
+    const reservationColors = JSON.parse(
+      localStorage.getItem("reservationColors") || "{}"
+    );
+
+    const backgroundColor = reservationColors[reservation.id] || "#3b82f6";
 
     const borderColor =
       backgroundColor === "#3b82f6" ? "#2563eb" : backgroundColor;
@@ -83,6 +86,7 @@ export default function Dashboard() {
       backgroundColor: backgroundColor,
       borderColor: borderColor,
       textColor: "#ffffff",
+      color: backgroundColor, // Propriété principale pour FullCalendar
     };
   });
 

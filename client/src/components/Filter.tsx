@@ -74,21 +74,20 @@ export default function Filter({
       const [endHour, endMinute] = endTime.split(":");
       endDateTime.setHours(parseInt(endHour), parseInt(endMinute), 0, 0);
 
-      console.log("Dates envoyées:", {
-        startTime: startDateTime.toISOString(),
-        endTime: endDateTime.toISOString(),
-        roomId: selectedRoom,
-      });
-
-      await reservationService.createReservation({
+      const newReservation = await reservationService.createReservation({
         roomId: selectedRoom,
         startTime: startDateTime.toISOString(),
         endTime: endDateTime.toISOString(),
       });
 
-      const roomColors = JSON.parse(localStorage.getItem("roomColors") || "{}");
-      roomColors[selectedRoom] = selectedColor;
-      localStorage.setItem("roomColors", JSON.stringify(roomColors));
+      const reservationColors = JSON.parse(
+        localStorage.getItem("reservationColors") || "{}"
+      );
+      reservationColors[newReservation.id] = selectedColor;
+      localStorage.setItem(
+        "reservationColors",
+        JSON.stringify(reservationColors)
+      );
 
       setSuccess("Réservation créée avec succès!");
       setSelectedRoom("");
