@@ -1,12 +1,12 @@
 import express from "express";
-import { createReservation } from "../controller/reservation/create-reservation";
-import { deleteReservation } from "../controller/reservation/delete-reservation";
+import { createReservation } from "../controller/reservation/create-reservation.ts";
+import { deleteReservation } from "../controller/reservation/delete-reservation.ts";
 import {
   getAllReservationsByRoomId,
   getReservationAfterDate,
   getReservationsByUser,
-} from "../controller/reservation/get-reservation";
-import { isAdmin } from "../middleware/admin";
+} from "../controller/reservation/get-reservation.ts";
+import { isAdmin } from "../middleware/admin.ts";
 
 const reservationRouter = express.Router();
 

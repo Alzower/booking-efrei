@@ -1,10 +1,10 @@
 import express from "express";
-import { getUser, getUsers } from "../controller/user/get-user";
-import { createUser } from "../controller/user/create-user";
-import { deleteUser } from "../controller/user/delete-user";
-import { updateUser } from "../controller/user/update-user";
-import { isAdmin } from "../middleware/admin";
-import { userIsAuth } from "../middleware/userIsAuth";
+import { getUser, getUsers } from "../controller/user/get-user.ts";
+import { createUser } from "../controller/user/create-user.ts";
+import { deleteUser } from "../controller/user/delete-user.ts";
+import { updateUser } from "../controller/user/update-user.ts";
+import { isAdmin } from "../middleware/admin.ts";
+import { userIsAuth } from "../middleware/userIsAuth.ts";
 
 const userRouter = express.Router();
 

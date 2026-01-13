@@ -1,10 +1,9 @@
-import prisma from "../../db/prisma";
+import prisma from "../../db/prisma.ts";
 import bcrypt from "bcrypt";
-import { findUserByEmail } from "../../helper/user-helper";
+import { findUserByEmail } from "../../helper/user-helper.ts";
+import jwt from "jsonwebtoken";
 
 export const loginController = async (req, res) => {
-  const jwt = require("jsonwebtoken");
-
   const { email, password } = req.body;
 
   const user = await findUserByEmail(prisma, email);
