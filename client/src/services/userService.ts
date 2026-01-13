@@ -3,15 +3,13 @@ const API_URL = "http://localhost:3000/api";
 export interface User {
   id: string;
   email: string;
-  firstName: string;
-  lastName: string;
+  name: string;
   role: string;
 }
 
 export interface UpdateUserData {
   email?: string;
-  firstName?: string;
-  lastName?: string;
+  name?: string;
 }
 
 export const userService = {
@@ -60,5 +58,48 @@ export const userService = {
     }
 
     return response.json();
+  },
+
+  async getAllUsers(): Promise<User[]> {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("Non authentifié");
+    }
+
+    const response = await fetch(`${API_URL}/users`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de la récupération des utilisateurs");
+    }
+
+    return response.json();
+  },
+
+  async deleteUser(userId: string): Promise<void> {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("Non authentifié");
+    }
+
+    const response = await fetch(`${API_URL}/users/${userId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        errorData.error || "Erreur lors de la suppression de l'utilisateur"
+      );
+    }
   },
 };
