@@ -307,6 +307,56 @@ Supprime une salle.
 }
 ```
 
+### GET `/api/rooms/:id/availability`
+
+Récupère les horaires de disponibilité d'une salle pour une date donnée.
+
+**Paramètres:**
+
+- `id` (URL) - ID de la salle
+- `date` (Query) - Date au format ISO 8601 (ex: 2026-01-15)
+
+**Exemple:**
+
+```
+GET /api/rooms/room_id/availability?date=2026-01-15
+```
+
+**Réponse (salle disponible toute la journée):**
+
+```json
+{
+  "message": "La salle est disponible toute la journée",
+  "availableTimes": [
+    {
+      "startTime": "2026-01-15T00:00:00.000Z",
+      "endTime": "2026-01-15T23:59:59.999Z"
+    }
+  ]
+}
+```
+
+**Réponse (salle partiellement réservée):**
+
+```json
+{
+  "availableTimes": [
+    {
+      "startTime": "2026-01-15T00:00:00.000Z",
+      "endTime": "2026-01-15T09:00:00.000Z"
+    },
+    {
+      "startTime": "2026-01-15T11:00:00.000Z",
+      "endTime": "2026-01-15T14:00:00.000Z"
+    },
+    {
+      "startTime": "2026-01-15T17:00:00.000Z",
+      "endTime": "2026-01-15T23:59:59.999Z"
+    }
+  ]
+}
+```
+
 ---
 
 ## 📅 Réservations
