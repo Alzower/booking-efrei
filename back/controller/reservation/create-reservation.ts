@@ -3,7 +3,8 @@ import { reservationDateIsValid } from "../../../helper/reservation-helper";
 
 export const createReservation = async (req, res) => {
   try {
-    const { userId, roomId, startTime, endTime } = req.body;
+    const { roomId, startTime, endTime } = req.body;
+    const userId = req.user?.id;
 
     if (!userId) {
       return res.status(400).json({ error: "ID utilisateur invalide" });

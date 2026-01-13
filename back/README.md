@@ -46,6 +46,16 @@ Authentification d'un utilisateur.
 
 Récupère la liste de tous les utilisateurs.
 
+**Permissions:** 🔒 Admin uniquement
+
+**Middleware:** `isAdmin`
+
+**Headers:**
+
+```
+Authorization: Bearer <token>
+```
+
 **Réponse:**
 
 ```json
@@ -60,13 +70,17 @@ Récupère la liste de tous les utilisateurs.
 ]
 ```
 
-### GET `/api/users/:id`
+### GET `/api/users/me`
 
-Récupère un utilisateur spécifique par son ID.
+Récupère les informations de l'utilisateur actuellement connecté.
 
-**Paramètres:**
+**Middleware:** `userIsAuth`
 
-- `id` (URL) - ID de l'utilisateur
+**Headers:**
+
+```
+Authorization: Bearer <token>
+```
 
 **Réponse:**
 
@@ -82,7 +96,7 @@ Récupère un utilisateur spécifique par son ID.
 
 ### POST `/api/users`
 
-Crée un nouvel utilisateur.
+Crée un nouvel utilisateur (inscription).
 
 **Body:**
 
@@ -107,13 +121,17 @@ Crée un nouvel utilisateur.
 }
 ```
 
-### PUT `/api/users/:id`
+### PUT `/api/users/me`
 
-Met à jour un utilisateur existant.
+Met à jour les informations de l'utilisateur connecté.
 
-**Paramètres:**
+**Middleware:** `userIsAuth`
 
-- `id` (URL) - ID de l'utilisateur
+**Headers:**
+
+```
+Authorization: Bearer <token>
+```
 
 **Body:**
 
@@ -140,6 +158,16 @@ Met à jour un utilisateur existant.
 ### DELETE `/api/users/:id`
 
 Supprime un utilisateur.
+
+**Permissions:** 🔒 Admin uniquement
+
+**Middleware:** `isAdmin`
+
+**Headers:**
+
+```
+Authorization: Bearer <token>
+```
 
 **Paramètres:**
 

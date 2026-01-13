@@ -2,7 +2,7 @@ import prisma from "../../db/prisma";
 
 export const updateUser = async (req, res) => {
   try {
-    const userId = req.params.id;
+    const userId = req.user?.id;
     const { email, name, password } = req.body;
 
     const updatedUser = await prisma.user.update({
