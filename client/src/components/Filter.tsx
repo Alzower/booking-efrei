@@ -21,6 +21,7 @@ export default function Filter({
   const [startTime, setStartTime] = useState("09:00");
   const [endTime, setEndTime] = useState("10:00");
   const [selectedColor, setSelectedColor] = useState("#3b82f6");
+  const [selectedEquipments, setSelectedEquipments] = useState<string[]>([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -117,9 +118,29 @@ export default function Filter({
     setStartTime("09:00");
     setEndTime("10:00");
     setSelectedColor("#3b82f6");
+    setSelectedEquipments([]);
     setError("");
     setSuccess("");
   };
+
+  const handleEquipmentToggle = (equipment: string) => {
+    setSelectedEquipments((prev) =>
+      prev.includes(equipment)
+        ? prev.filter((eq) => eq !== equipment)
+        : [...prev, equipment]
+    );
+  };
+
+  const allEquipments = Array.from(
+    new Set(rooms.flatMap((room) => room.equipment))
+  );
+
+  const filteredRooms =
+    selectedEquipments.length === 0
+      ? rooms
+      : rooms.filter((room) =>
+          selectedEquipments.every((eq) => room.equipment.includes(eq))
+        );
 
   const colors = [
     { name: "Bleu", value: "#3b82f6" },
@@ -135,8 +156,8 @@ export default function Filter({
   if (!selectedDate) return null;
 
   return (
-    <div className="w-[400px] bg-white shadow-[-4px_0_15px_rgba(0,0,0,0.1)] flex flex-col animate-slide-in">
-      <div className="flex justify-between items-center p-8 border-b-2 border-gray-200">
+    <div className="w-[400px] h-screen bg-white shadow-[-4px_0_15px_rgba(0,0,0,0.1)] flex flex-col animate-slide-in">
+      <div className="flex justify-between items-center p-8 border-b-2 border-gray-200 flex-shrink-0">
         <h2 className="text-2xl font-semibold text-gray-800">
           Réserver une salle
         </h2>
@@ -181,15 +202,48 @@ export default function Filter({
           </div>
         ) : (
           <form onSubmit={handleSubmit}>
+            {allEquipments.length > 0 && (
+              <div className="mb-6">
+                <h3 className="text-base font-semibold text-gray-800 mb-4">
+                  Filtrer par équipements
+                </h3>
+                <div className="space-y-2">
+                  {allEquipments.map((equipment) => (
+                    <label
+                      key={equipment}
+                      className="flex items-center gap-3 p-2 cursor-pointer rounded-lg hover:bg-gray-50 transition-colors"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedEquipments.includes(equipment)}
+                        onChange={() => handleEquipmentToggle(equipment)}
+                        className="w-4 h-4 cursor-pointer accent-blue-600"
+                      />
+                      <span className="text-sm text-gray-700">{equipment}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="mb-6">
               <h3 className="text-base font-semibold text-gray-800 mb-4">
                 Sélectionner une salle
+                {filteredRooms.length < rooms.length && (
+                  <span className="text-sm font-normal text-gray-600 ml-2">
+                    ({filteredRooms.length} sur {rooms.length})
+                  </span>
+                )}
               </h3>
-              {rooms.length === 0 ? (
-                <p className="text-sm text-gray-600">Aucune salle disponible</p>
+              {filteredRooms.length === 0 ? (
+                <p className="text-sm text-gray-600">
+                  {rooms.length === 0
+                    ? "Aucune salle disponible"
+                    : "Aucune salle ne correspond aux équipements sélectionnés"}
+                </p>
               ) : (
                 <div className="space-y-2">
-                  {rooms.map((room) => (
+                  {filteredRooms.map((room) => (
                     <label
                       key={room.id}
                       className={`flex items-start gap-3 p-3 cursor-pointer rounded-lg transition-colors duration-200 border-2 ${
