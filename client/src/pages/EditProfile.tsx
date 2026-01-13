@@ -12,8 +12,7 @@ function EditProfile() {
   const [success, setSuccess] = useState("");
   const [formData, setFormData] = useState({
     email: "",
-    firstName: "",
-    lastName: "",
+    name: "",
   });
 
   useEffect(() => {
@@ -32,11 +31,14 @@ function EditProfile() {
       const user = await userService.getCurrentUser();
       setFormData({
         email: user.email,
-        firstName: user.firstName || "",
-        lastName: user.lastName || "",
+        name: user.name || "",
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur lors du chargement du profil");
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Erreur lors du chargement du profil"
+      );
     } finally {
       setLoading(false);
     }
@@ -47,7 +49,7 @@ function EditProfile() {
     setError("");
     setSuccess("");
 
-    if (!formData.email || !formData.firstName || !formData.lastName) {
+    if (!formData.email || !formData.name) {
       setError("Tous les champs sont requis");
       return;
     }
@@ -60,7 +62,9 @@ function EditProfile() {
         navigate("/dashboard");
       }, 2000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur lors de la mise à jour");
+      setError(
+        err instanceof Error ? err.message : "Erreur lors de la mise à jour"
+      );
     } finally {
       setSaving(false);
     }
@@ -87,7 +91,7 @@ function EditProfile() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <div className="max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:px-8 my-32">
         <div className="bg-white rounded-lg shadow-md p-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-6">
             Modifier le profil
@@ -135,25 +139,7 @@ function EditProfile() {
                 type="text"
                 id="firstName"
                 name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                required
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="lastName"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Nom
-              </label>
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                value={formData.lastName}
+                value={formData.name}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required

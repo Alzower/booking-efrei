@@ -1,16 +1,31 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { authService } from "../services/authService";
+import { userService } from "../services/userService";
 
 function Header() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [userRole, setUserRole] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = authService.getToken();
     setIsAuthenticated(!!token);
+
+    if (token) {
+      loadUserRole();
+    }
   }, []);
+
+  const loadUserRole = async () => {
+    try {
+      const user = await userService.getCurrentUser();
+      setUserRole(user.role);
+    } catch (err) {
+      console.error("Erreur lors de la récupération du rôle:", err);
+    }
+  };
 
   const handleLogout = () => {
     authService.removeToken();
@@ -66,7 +81,7 @@ function Header() {
                 </button>
 
                 {showMenu && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-2 z-50">
                     <Link
                       to="/dashboard"
                       onClick={() => setShowMenu(false)}
@@ -88,6 +103,29 @@ function Header() {
                     >
                       Historique
                     </Link>
+                    {userRole === "ADMIN" && (
+                      <>
+                        <div className="border-t border-gray-200 my-2"></div>
+                        <div className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase">
+                          Administration
+                        </div>
+                        <Link
+                          to="/admin"
+                          onClick={() => setShowMenu(false)}
+                          className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                        >
+                          Gestion des salles
+                        </Link>
+                        <Link
+                          to="/admin/users"
+                          onClick={() => setShowMenu(false)}
+                          className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                        >
+                          Gestion des utilisateurs
+                        </Link>
+                      </>
+                    )}
+                    <div className="border-t border-gray-200 my-2"></div>
                     <button
                       onClick={handleLogout}
                       className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
