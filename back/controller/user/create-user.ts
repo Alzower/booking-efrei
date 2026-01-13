@@ -1,7 +1,7 @@
-import prisma from "../../db/prisma";
+import prisma from "../../db/prisma.ts";
 import bcrypt from "bcrypt";
-import { isMailValid } from "../../../helper/mail-helper";
-import { passwordIsValid } from "../../../helper/password-helper";
+import { isMailValid } from "../../../helper/mail-helper.ts";
+import { passwordIsValid } from "../../../helper/password-helper.ts";
 
 export const createUser = async (req, res) => {
   try {

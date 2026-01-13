@@ -1,9 +1,9 @@
 import express from "express";
-import { createRoom } from "../controller/room/create-room";
-import { isAdmin } from "../middleware/admin";
-import { updateRoom } from "../controller/room/update-room";
-import { getRoomById, getRooms } from "../controller/room/get-room";
-import { deleteRoom } from "../controller/room/delete-room";
+import { createRoom } from "../controller/room/create-room.ts";
+import { isAdmin } from "../middleware/admin.ts";
+import { updateRoom } from "../controller/room/update-room.ts";
+import { getRoomById, getRooms } from "../controller/room/get-room.ts";
+import { deleteRoom } from "../controller/room/delete-room.ts";
 
 const roomRouter = express.Router();
 

@@ -1,5 +1,5 @@
-import prisma from "../../db/prisma";
-import { reservationDateIsValid } from "../../../helper/reservation-helper";
+import prisma from "../../db/prisma.ts";
+import { reservationDateIsValid } from "../../../helper/reservation-helper.ts";
 
 export const createReservation = async (req, res) => {
   try {

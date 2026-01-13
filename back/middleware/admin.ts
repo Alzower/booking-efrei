@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import prisma from "../db/prisma";
+import prisma from "../db/prisma.ts";
 
 export const isAdmin = async (req, res, next) => {
   try {

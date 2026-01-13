@@ -1,4 +1,4 @@
-import prisma from "../../db/prisma";
+import prisma from "../../db/prisma.ts";
 
 export const createRoom = async (req, res) => {
   try {
