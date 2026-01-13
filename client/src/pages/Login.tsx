@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { authService } from "../services/authService";
+import { userService } from "../services/userService";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -17,8 +18,16 @@ function Login() {
     try {
       const response = await authService.login({ email, password });
       authService.saveToken(response.token);
-      navigate("/dashboard");
+
+      const user = await userService.getCurrentUser();
+
+      if (user.role === "ADMIN") {
+        navigate("/admin");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (err) {
+      console.error("Login error:", err);
       setError(err instanceof Error ? err.message : "Erreur de connexion");
     } finally {
       setIsLoading(false);

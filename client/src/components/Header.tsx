@@ -81,6 +81,13 @@ function Header() {
                     >
                       Modifier le profil
                     </Link>
+                    <Link
+                      to="/history"
+                      onClick={() => setShowMenu(false)}
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                    >
+                      Historique
+                    </Link>
                     <button
                       onClick={handleLogout}
                       className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"

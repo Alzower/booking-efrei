@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { authService } from "../services/authService";
+import { userService } from "../services/userService";
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -19,9 +20,18 @@ function Signup() {
       await authService.signup({ email, name, password });
       const loginResponse = await authService.login({ email, password });
       authService.saveToken(loginResponse.token);
-      navigate("/dashboard");
+
+      const user = await userService.getCurrentUser();
+
+      if (user.role === "ADMIN") {
+        navigate("/admin");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur lors de l'inscription");
+      setError(
+        err instanceof Error ? err.message : "Erreur lors de l'inscription"
+      );
     } finally {
       setIsLoading(false);
     }
