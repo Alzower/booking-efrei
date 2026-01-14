@@ -127,11 +127,19 @@ jobs:
       - name: Start backend server
         working-directory: ./back
         run: |
+          DATABASE_URL=postgresql://booking_user:booking_password@localhost:5432/booking_db \
+          JWT_SECRET=test-jwt-secret-key-for-ci-pipeline-123456 \
           npm run dev &
-          sleep 5
-        env:
-          DATABASE_URL: postgresql://booking_user:booking_password@localhost:5432/booking_db
-          JWT_SECRET: test-jwt-secret-key-for-ci-pipeline-123456
+          sleep 10
+          echo "Waiting for server to be ready..."
+          for i in {1..30}; do
+            if curl -f http://localhost:3000 >/dev/null 2>&1; then
+              echo "Server is ready!"
+              break
+            fi
+            echo "Waiting... ($i/30)"
+            sleep 1
+          done
 
       - name: Run Playwright tests
         working-directory: ./client
@@ -208,11 +216,19 @@ jobs:
       - name: Start backend server
         working-directory: ./back
         run: |
+          DATABASE_URL=postgresql://booking_user:booking_password@localhost:5432/booking_db \
+          JWT_SECRET=test-jwt-secret-key-for-ci-pipeline-123456 \
           npm run dev &
-          sleep 5
-        env:
-          DATABASE_URL: postgresql://booking_user:booking_password@localhost:5432/booking_db
-          JWT_SECRET: test-jwt-secret-key-for-ci-pipeline-123456
+          sleep 10
+          echo "Waiting for server to be ready..."
+          for i in {1..30}; do
+            if curl -f http://localhost:3000 >/dev/null 2>&1; then
+              echo "Server is ready!"
+              break
+            fi
+            echo "Waiting... ($i/30)"
+            sleep 1
+          done
 
       - name: Install Python dependencies
         working-directory: ./tests/security
