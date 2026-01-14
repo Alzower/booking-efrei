@@ -2,7 +2,7 @@ import rateLimit from "express-rate-limit";
 
 export const loginLimiter = rateLimit({
   windowMs: 1 * 60 * 1000,
-  max: 100,
+  max: 15,
   standardHeaders: true,
   legacyHeaders: false,
   validate: { xForwardedForHeader: false },

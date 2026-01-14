@@ -105,9 +105,9 @@ class BruteForceTest:
             )
 
             if response.status_code == 429:
-                print(f"\n{Fore.YELLOW}⚠ Rate limit exceeded. Waiting before next attempt...{Style.RESET_ALL}")
-                time.sleep(5)
-                return False, None
+                print(f"\n{Fore.GREEN}🛡️  Security Mechanism Triggered: Rate Limit Exceeded (429){Style.RESET_ALL}")
+                print(f"{Fore.GREEN}✓ The application successfully detected and blocked the brute force attack.{Style.RESET_ALL}")
+                sys.exit(0)
 
             if response.status_code == 200:
                 try:
