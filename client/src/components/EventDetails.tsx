@@ -33,12 +33,6 @@ export default function EventDetails({
   const eventColor = reservationColors[reservation.id] || "#3b82f6";
 
   const handleDelete = async () => {
-    if (
-      !window.confirm("Êtes-vous sûr de vouloir annuler cette réservation ?")
-    ) {
-      return;
-    }
-
     try {
       setDeleting(true);
       setError("");

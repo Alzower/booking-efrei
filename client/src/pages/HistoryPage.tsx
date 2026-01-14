@@ -123,12 +123,6 @@ function HistoryPage() {
   };
 
   const handleCancelReservation = async (reservationId: string) => {
-    if (
-      !window.confirm("Êtes-vous sûr de vouloir annuler cette réservation ?")
-    ) {
-      return;
-    }
-
     try {
       await reservationService.deleteReservation(reservationId);
       await loadData();

@@ -100,10 +100,6 @@ function AdminDashboard() {
   };
 
   const handleDeleteRoom = async (id: string) => {
-    if (!window.confirm("Êtes-vous sûr de vouloir supprimer cette salle ?")) {
-      return;
-    }
-
     try {
       await roomService.deleteRoom(id);
       setSuccess("Salle supprimée avec succès!");
