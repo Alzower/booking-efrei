@@ -122,30 +122,13 @@ jobs:
           ADMIN_EMAIL: admin@booking.com
           ADMIN_PASSWORD: Admin123!
 
-      - name: Create backend .env file
-        working-directory: ./back
-        run: |
-          printf "DATABASE_URL=postgresql://booking_user:booking_password@localhost:5432/booking_db\n" > .env
-          printf "JWT_SECRET=test-jwt-secret-key-for-ci-pipeline-123456\n" >> .env
-          printf "PORT=3000\n" >> .env
-          echo "=== .env file content ==="
-          cat .env
-          echo "========================="
-
       - name: Start backend server
         working-directory: ./back
         run: |
+          export DATABASE_URL=postgresql://booking_user:booking_password@localhost:5432/booking_db
+          export JWT_SECRET=test-jwt-secret-key-for-ci-pipeline-123456
+          export PORT=3000
           npm run dev &
-          sleep 10
-          echo "Waiting for server to be ready..."
-          for i in {1..30}; do
-            if curl -f http://localhost:3000 >/dev/null 2>&1; then
-              echo "Server is ready!"
-              break
-            fi
-            echo "Waiting... ($i/30)"
-            sleep 1
-          done
 
       - name: Run Playwright tests
         working-directory: ./client
@@ -217,19 +200,12 @@ jobs:
           ADMIN_EMAIL: admin@booking.com
           ADMIN_PASSWORD: Admin123!
 
-      - name: Create backend .env file
-        working-directory: ./back
-        run: |
-          printf "DATABASE_URL=postgresql://booking_user:booking_password@localhost:5432/booking_db\n" > .env
-          printf "JWT_SECRET=test-jwt-secret-key-for-ci-pipeline-123456\n" >> .env
-          printf "PORT=3000\n" >> .env
-          echo "=== .env file content ==="
-          cat .env
-          echo "========================="
-
       - name: Start backend server
         working-directory: ./back
         run: |
+          export DATABASE_URL=postgresql://booking_user:booking_password@localhost:5432/booking_db
+          export JWT_SECRET=test-jwt-secret-key-for-ci-pipeline-123456
+          export PORT=3000
           npm run dev &
           sleep 10
           echo "Waiting for server to be ready..."
