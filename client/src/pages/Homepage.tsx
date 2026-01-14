@@ -9,7 +9,7 @@ function Homepage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              Réservez vos salles en toute simplicité
+              Réservez vos salles simplement
             </h1>
             <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
               EasyBooking simplifie la gestion de vos réservations de salles de
@@ -19,9 +19,6 @@ function Homepage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg text-lg">
                 Commencer gratuitement
-              </button>
-              <button className="px-8 py-4 bg-blue-700 text-white rounded-lg font-semibold hover:bg-blue-800 transition-colors border-2 border-white shadow-lg text-lg">
-                Voir la démo
               </button>
             </div>
           </div>
