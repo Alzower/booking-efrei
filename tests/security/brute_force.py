@@ -104,6 +104,11 @@ class BruteForceTest:
                 timeout=10
             )
 
+            if response.status_code == 429:
+                print(f"\n{Fore.YELLOW}⚠ Rate limit exceeded. Waiting before next attempt...{Style.RESET_ALL}")
+                time.sleep(5)
+                return False, None
+
             if response.status_code == 200:
                 try:
                     data = response.json()
