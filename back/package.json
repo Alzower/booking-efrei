@@ -5,6 +5,8 @@
   "main": "index.ts",
   "scripts": {
     "dev": "nodemon ./index.ts",
+    "build": "tsc",
+    "start": "node --import tsx ./index.ts",
     "test": "vitest"
   },
   "author": "Glenn GUILLARD | Efrei",
@@ -20,7 +22,8 @@
     "jsonwebtoken": "^9.0.2",
     "nanoid": "^3.3.11",
     "pg": "^8.16.3",
-    "prisma": "^7.2.0"
+    "prisma": "^7.2.0",
+    "tsx": "^4.7.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
