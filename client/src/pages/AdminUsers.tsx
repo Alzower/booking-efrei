@@ -50,14 +50,6 @@ function AdminUsers() {
       return;
     }
 
-    if (
-      !window.confirm(
-        `Êtes-vous sûr de vouloir supprimer l'utilisateur ${userEmail} ?`
-      )
-    ) {
-      return;
-    }
-
     try {
       await userService.deleteUser(userId);
       setSuccess("Utilisateur supprimé avec succès!");
