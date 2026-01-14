@@ -125,11 +125,9 @@ jobs:
       - name: Create backend .env file
         working-directory: ./back
         run: |
-          cat > .env << 'EOF'
-          DATABASE_URL=postgresql://booking_user:booking_password@localhost:5432/booking_db
-          JWT_SECRET=test-jwt-secret-key-for-ci-pipeline-123456
-          PORT=3000
-          EOF
+          printf "DATABASE_URL=postgresql://booking_user:booking_password@localhost:5432/booking_db\n" > .env
+          printf "JWT_SECRET=test-jwt-secret-key-for-ci-pipeline-123456\n" >> .env
+          printf "PORT=3000\n" >> .env
           echo "=== .env file content ==="
           cat .env
           echo "========================="
@@ -222,11 +220,9 @@ jobs:
       - name: Create backend .env file
         working-directory: ./back
         run: |
-          cat > .env << 'EOF'
-          DATABASE_URL=postgresql://booking_user:booking_password@localhost:5432/booking_db
-          JWT_SECRET=test-jwt-secret-key-for-ci-pipeline-123456
-          PORT=3000
-          EOF
+          printf "DATABASE_URL=postgresql://booking_user:booking_password@localhost:5432/booking_db\n" > .env
+          printf "JWT_SECRET=test-jwt-secret-key-for-ci-pipeline-123456\n" >> .env
+          printf "PORT=3000\n" >> .env
           echo "=== .env file content ==="
           cat .env
           echo "========================="
