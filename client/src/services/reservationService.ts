@@ -82,4 +82,25 @@ export const reservationService = {
       throw new Error("Erreur lors de la suppression de la réservation");
     }
   },
+
+  async getAllReservations(): Promise<Reservation[]> {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("Non authentifié");
+    }
+
+    const response = await fetch(`${API_URL}/reservation/all`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de la récupération des réservations");
+    }
+
+    return response.json();
+  },
 };

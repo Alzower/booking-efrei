@@ -2,6 +2,7 @@ import express from "express";
 import { createReservation } from "../controller/reservation/create-reservation.ts";
 import { deleteReservation } from "../controller/reservation/delete-reservation.ts";
 import {
+  getAllReservations,
   getAllReservationsByRoomId,
   getReservationAfterDate,
   getReservationsByUser,
@@ -13,6 +14,7 @@ const reservationRouter = express.Router();
 reservationRouter.post("/", createReservation);
 reservationRouter.delete("/:reservationId", deleteReservation);
 reservationRouter.get("/", getReservationsByUser);
+reservationRouter.get("/all", getAllReservations);
 reservationRouter.get("/:date", getReservationAfterDate);
 reservationRouter.get("/room/:roomId", isAdmin, getAllReservationsByRoomId);
 

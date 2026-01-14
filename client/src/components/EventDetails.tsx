@@ -48,7 +48,10 @@ export default function EventDetails({
         localStorage.getItem("reservationColors") || "{}"
       );
       delete reservationColors[reservation.id];
-      localStorage.setItem("reservationColors", JSON.stringify(reservationColors));
+      localStorage.setItem(
+        "reservationColors",
+        JSON.stringify(reservationColors)
+      );
 
       setSuccess("Réservation annulée avec succès!");
 
@@ -69,8 +72,8 @@ export default function EventDetails({
   };
 
   return (
-    <div className="w-[400px] bg-white shadow-[-4px_0_15px_rgba(0,0,0,0.1)] flex flex-col animate-slide-in">
-      <div className="flex justify-between items-center p-8 border-b-2 border-gray-200">
+    <div className="w-[400px] h-screen bg-white shadow-[-4px_0_15px_rgba(0,0,0,0.1)] flex flex-col animate-slide-in">
+      <div className="flex justify-between items-center p-8 border-b-2 border-gray-200 flex-shrink-0">
         <h2 className="text-2xl font-semibold text-gray-800">
           Détails de la réservation
         </h2>
