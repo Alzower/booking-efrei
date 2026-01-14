@@ -11,7 +11,6 @@ export default defineConfig({
     {
       name: "auth-tests",
       testMatch: /auth\.spec\.ts/,
-      // Pas de storage state pour tester le flux d'authentification
     },
     {
       name: "authenticated-tests",

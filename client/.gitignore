@@ -22,4 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Playwright
 /test-results
+/.auth
+/playwright-report
+user.json
