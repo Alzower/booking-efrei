@@ -5,8 +5,9 @@
   "main": "index.ts",
   "scripts": {
     "dev": "nodemon ./index.ts",
-    "build": "tsc",
+    "build": "npx prisma generate && tsc",
     "start": "node --import tsx ./index.ts",
+    "postinstall": "npx prisma generate",
     "test": "vitest"
   },
   "author": "Glenn GUILLARD | Efrei",
