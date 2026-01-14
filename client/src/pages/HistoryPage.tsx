@@ -35,10 +35,6 @@ function HistoryPage() {
       const now = new Date();
       const reservationsWithStatus: ReservationWithStatus[] =
         reservationsData.map((reservation) => {
-          if (reservation.status === "cancelled") {
-            return { ...reservation, status: "cancelled" };
-          }
-
           const start = new Date(reservation.startTime);
           const end = new Date(reservation.endTime);
 

@@ -209,7 +209,6 @@ export default function Filter({
       if (reservation.roomId !== roomId) return false;
 
       const reservationStart = new Date(reservation.startTime);
-      const reservationEnd = new Date(reservation.endTime);
 
       return (
         reservationStart >= selectedDateStart &&
