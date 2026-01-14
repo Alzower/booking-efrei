@@ -172,7 +172,10 @@ function AdminDashboard() {
             </p>
           </div>
           <button
-            onClick={() => setShowCreateModal(true)}
+            onClick={() => {
+              setShowCreateModal(true);
+            }}
+            data-testid="create-room-button"
             className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold shadow-md"
           >
             + Créer une salle
@@ -250,27 +253,21 @@ function AdminDashboard() {
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-2">
+                <div className="flex gap-2">
                   <button
-                    onClick={() => setViewingRoom(room)}
-                    className="w-full px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors font-medium"
+                    onClick={() => openEditModal(room)}
+                    data-testid={`edit-room-${room.id}`}
+                    className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
                   >
-                    Voir détails
+                    Modifier
                   </button>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => openEditModal(room)}
-                      className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
-                    >
-                      Modifier
-                    </button>
-                    <button
-                      onClick={() => handleDeleteRoom(room.id)}
-                      className="flex-1 px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors font-medium"
-                    >
-                      Supprimer
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => handleDeleteRoom(room.id)}
+                    data-testid={`delete-room-${room.id}`}
+                    className="flex-1 px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors font-medium"
+                  >
+                    Supprimer
+                  </button>
                 </div>
               </div>
             </div>
@@ -308,8 +305,11 @@ function AdminDashboard() {
         )}
 
         {(showCreateModal || editingRoom) && (
-          <div className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div
+              className="bg-white rounded-lg shadow-xl max-w-md w-full p-6"
+              data-testid="room-modal"
+            >
               <h2 className="text-2xl font-bold text-gray-900 mb-6">
                 {editingRoom ? "Modifier la salle" : "Créer une salle"}
               </h2>
@@ -328,6 +328,8 @@ function AdminDashboard() {
                       onChange={(e) =>
                         setFormData({ ...formData, name: e.target.value })
                       }
+                      placeholder="Ex: Salle A101"
+                      data-testid="room-name-input"
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       required
                     />
@@ -347,6 +349,8 @@ function AdminDashboard() {
                           capacity: parseInt(e.target.value) || 0,
                         })
                       }
+                      placeholder="Ex: 20"
+                      data-testid="room-capacity-input"
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       required
                     />
@@ -399,6 +403,7 @@ function AdminDashboard() {
                 <div className="flex gap-3 mt-6">
                   <button
                     type="submit"
+                    data-testid="submit-room-button"
                     className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
                   >
                     {editingRoom ? "Mettre à jour" : "Créer"}

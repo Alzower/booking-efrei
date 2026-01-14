@@ -327,6 +327,9 @@ export default function Filter({
                     return (
                       <label
                         key={room.id}
+                        data-testid={`room-label-${room.name
+                          .replace(/\s+/g, "-")
+                          .toLowerCase()}`}
                         className={`flex items-start gap-3 p-3 rounded-lg transition-colors duration-200 border-2 ${
                           !isAvailable
                             ? "border-red-200 bg-red-50 cursor-not-allowed"
@@ -341,6 +344,7 @@ export default function Filter({
                           value={room.id}
                           checked={selectedRoom === room.id}
                           onChange={(e) => setSelectedRoom(e.target.value)}
+                          data-testid={`room-radio-${room.id}`}
                           disabled={!isAvailable}
                           className="w-5 h-5 cursor-pointer accent-blue-600 mt-0.5 disabled:cursor-not-allowed"
                         />
@@ -536,6 +540,7 @@ export default function Filter({
               <button
                 type="submit"
                 disabled={submitting || !selectedRoom}
+                data-testid="reservation-submit-button"
                 className="bg-blue-600 text-white font-semibold text-sm px-6 py-3 rounded-lg hover:bg-blue-700 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-blue-600/20 transition-all duration-200 border-2 border-blue-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
               >
                 {submitting ? "Réservation..." : "Réserver"}

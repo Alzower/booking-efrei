@@ -123,6 +123,7 @@ function EditProfile() {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
+                data-testid="profile-email-input"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
               />
@@ -141,6 +142,7 @@ function EditProfile() {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
+                data-testid="profile-name-input"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
               />
@@ -150,6 +152,7 @@ function EditProfile() {
               <button
                 type="submit"
                 disabled={saving}
+                data-testid="profile-save-button"
                 className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-semibold"
               >
                 {saving ? "Enregistrement..." : "Enregistrer"}

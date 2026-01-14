@@ -65,6 +65,7 @@ function Header() {
             {isAuthenticated ? (
               <div className="relative">
                 <button
+                  data-testid="menue-button"
                   onClick={() => setShowMenu(!showMenu)}
                   className="flex items-center justify-center w-10 h-10 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors shadow-md"
                 >

@@ -112,7 +112,8 @@ function Signup() {
               </label>
               <input
                 id="password"
-                type="password"
+                type="text"
+                data-testid="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
