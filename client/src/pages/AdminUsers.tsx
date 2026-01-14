@@ -180,6 +180,7 @@ function AdminUsers() {
                       ) : (
                         <button
                           onClick={() => handleDeleteUser(user.id, user.email)}
+                          data-testid={`delete-user-${user.id}`}
                           className="text-red-600 hover:text-red-900 font-medium transition-colors"
                         >
                           Supprimer

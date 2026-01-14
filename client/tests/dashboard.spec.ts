@@ -16,12 +16,10 @@ test("create reservation, verify in history, and delete", async () => {
 
   await page.waitForTimeout(2000);
 
-  // Attendre que les salles se chargent dans le modal
   await page.waitForSelector("label", { timeout: 10000 });
 
   console.log("Recherche de la salle avec nom:", sharedRoomName);
 
-  // Débugger: afficher toutes les salles disponibles
   const allLabels = await page.locator("label").allTextContents();
   console.log("Salles disponibles:", allLabels);
 

@@ -29,12 +29,38 @@ export default defineConfig({
       },
     },
     {
+      name: "update-tests",
+      testMatch: /update\.spec\.ts/,
+      dependencies: [
+        "setup",
+        "auth-tests",
+        "create-room-tests",
+        "dashboard-tests",
+      ],
+      use: {
+        storageState: ".auth/user.json",
+      },
+    },
+    {
+      name: "delete-tests",
+      testMatch: /delete-user\.spec\.ts/,
+      dependencies: [
+        "setup",
+        "auth-tests",
+        "create-room-tests",
+        "dashboard-tests",
+        "update-tests",
+      ],
+    },
+    {
       name: "authenticated-tests",
       testMatch: /.*\.spec\.ts/,
       testIgnore: [
         /auth\.spec\.ts/,
         /create-room\.spec\.ts/,
         /dashboard\.spec\.ts/,
+        /update\.spec\.ts/,
+        /delete-user\.spec\.ts/,
       ],
       dependencies: ["setup"],
       use: {

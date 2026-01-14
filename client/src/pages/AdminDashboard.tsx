@@ -262,6 +262,7 @@ function AdminDashboard() {
                   </button>
                   <button
                     onClick={() => handleDeleteRoom(room.id)}
+                    data-testid={`delete-room-${room.id}`}
                     className="flex-1 px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors font-medium"
                   >
                     Supprimer

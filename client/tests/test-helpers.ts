@@ -19,10 +19,8 @@ interface SharedTestData {
 let sharedData: SharedTestData;
 
 if (fs.existsSync(SHARED_DATA_FILE)) {
-  // Lire le fichier existant
   sharedData = JSON.parse(fs.readFileSync(SHARED_DATA_FILE, "utf-8"));
 } else {
-  // Créer de nouvelles données
   const idRoom = nanoid(10);
   sharedData = {
     email: `${nanoid(10)}@example.com`,
@@ -41,3 +39,4 @@ export const sharedTestCredentials = {
 
 export const sharedRoomName = sharedData.roomName;
 export const sharedRoomTestId = sharedData.roomTestId;
+export const sharedRoomId = sharedData.roomId;

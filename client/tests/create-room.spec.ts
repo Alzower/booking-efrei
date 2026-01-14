@@ -1,5 +1,11 @@
 import { test, expect, firefox } from "@playwright/test";
 import { sharedRoomName } from "./test-helpers";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 test("create room for user", async () => {
   const browser = await firefox.launch({ headless: false, slowMo: 500 });
@@ -40,6 +46,25 @@ test("create room for user", async () => {
   await page.getByTestId("room-capacity-input").fill("20");
 
   await page.getByTestId("submit-room-button").click();
+
+  await page.waitForTimeout(2000);
+
+  const newRoomCard = page.locator(`text="${sharedRoomName}"`).first();
+  if (await newRoomCard.isVisible()) {
+    const deleteButton = page.locator(`[data-testid^="delete-room-"]`).first();
+    const testId = await deleteButton.getAttribute("data-testid");
+    if (testId) {
+      const roomId = testId.replace("delete-room-", "");
+      console.log("ID de la salle créée:", roomId);
+
+      const sharedDataFile = path.join(__dirname, ".shared-test-data.json");
+      if (fs.existsSync(sharedDataFile)) {
+        const data = JSON.parse(fs.readFileSync(sharedDataFile, "utf-8"));
+        data.createdRoomId = roomId;
+        fs.writeFileSync(sharedDataFile, JSON.stringify(data, null, 2));
+      }
+    }
+  }
 
   await browser.close();
 });
