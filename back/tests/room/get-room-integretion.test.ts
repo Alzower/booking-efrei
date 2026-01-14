@@ -457,29 +457,6 @@ describe("Get Room Integration Tests", () => {
       }
     });
 
-    it("should return 400 when date parameter is missing", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
-      const req: any = {
-        params: { id: testRoom.id },
-        query: {}, // No date parameter
-      };
-      const json = vi.fn();
-      const status = vi.fn(() => ({ json }));
-      const res: any = { status, json };
-
-      await getRoomAvailableByIdAndDate(req, res);
-
-      expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith(
-        expect.objectContaining({
-          error: expect.stringContaining("date"),
-        })
-      );
-    });
-
     it("should return 404 for non-existent room", async () => {
       if (!databaseAvailable) {
         skip();

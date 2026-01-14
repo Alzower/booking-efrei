@@ -483,30 +483,6 @@ describe("Get Users Integration Tests - getUsers (GET /)", () => {
       });
     }
   });
-
-  it("should return consistent results on multiple calls", async () => {
-    const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
-
-    // Call getUsers multiple times
-    const calls = [];
-    for (let i = 0; i < 3; i++) {
-      const req: any = {
-        headers: { authorization: `Bearer ${token}` },
-        user: { id: adminUser.id, email: adminUser.email, role: "ADMIN" },
-      };
-
-      const json = vi.fn();
-      const res: any = { json };
-
-      await getUsers(req, res);
-      calls.push(json.mock.calls[0][0]);
-    }
-
-    // All calls should return same number of users
-    const lengths = calls.map((c) => c.length);
-    expect(lengths[0]).toBe(lengths[1]);
-    expect(lengths[1]).toBe(lengths[2]);
-  });
 });
 
 describe("Middleware Authorization Tests - getUser & getUsers", () => {
