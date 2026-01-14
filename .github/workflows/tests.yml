@@ -122,11 +122,16 @@ jobs:
           ADMIN_EMAIL: admin@booking.com
           ADMIN_PASSWORD: Admin123!
 
+      - name: Create backend .env file
+        working-directory: ./back
+        run: |
+          echo "DATABASE_URL=postgresql://booking_user:booking_password@localhost:5432/booking_db" > .env
+          echo "JWT_SECRET=test-jwt-secret-key-for-ci-pipeline-123456" >> .env
+          echo "PORT=3000" >> .env
+
       - name: Start backend server
         working-directory: ./back
         run: |
-          DATABASE_URL=postgresql://booking_user:booking_password@localhost:5432/booking_db \
-          JWT_SECRET=test-jwt-secret-key-for-ci-pipeline-123456 \
           npm run dev &
           sleep 10
           echo "Waiting for server to be ready..."
@@ -209,11 +214,16 @@ jobs:
           ADMIN_EMAIL: admin@booking.com
           ADMIN_PASSWORD: Admin123!
 
+      - name: Create backend .env file
+        working-directory: ./back
+        run: |
+          echo "DATABASE_URL=postgresql://booking_user:booking_password@localhost:5432/booking_db" > .env
+          echo "JWT_SECRET=test-jwt-secret-key-for-ci-pipeline-123456" >> .env
+          echo "PORT=3000" >> .env
+
       - name: Start backend server
         working-directory: ./back
         run: |
-          DATABASE_URL=postgresql://booking_user:booking_password@localhost:5432/booking_db \
-          JWT_SECRET=test-jwt-secret-key-for-ci-pipeline-123456 \
           npm run dev &
           sleep 10
           echo "Waiting for server to be ready..."
