@@ -43,7 +43,7 @@ function AdminUsers() {
     }
   };
 
-  const handleDeleteUser = async (userId: string, userEmail: string) => {
+  const handleDeleteUser = async (userId: string, _userEmail: string) => {
     if (currentUser && userId === currentUser.id) {
       setError("Vous ne pouvez pas supprimer votre propre compte");
       setTimeout(() => setError(""), 3000);
