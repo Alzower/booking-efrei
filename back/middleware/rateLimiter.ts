@@ -9,11 +9,9 @@ export const loginLimiter = rateLimit({
     const ip = req.ip || req.socket?.remoteAddress || "unknown";
     const forwardedFor = req.headers["x-forwarded-for"];
     const clientIp = forwardedFor ? forwardedFor.toString().split(",")[0] : ip;
-    console.log(`[Rate Limiter] Request from IP: ${clientIp}`);
     return clientIp;
   },
   handler: (req, res) => {
-    console.log(`[Rate Limiter] ❌ BLOCKED - Too many requests from this IP`);
     res.status(429).json({
       error: "Trop de tentatives de connexion",
       message: "Veuillez réessayer dans 1 minute",
