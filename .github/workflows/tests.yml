@@ -118,11 +118,14 @@ jobs:
       - name: Run Prisma migrations
         working-directory: ./back
         run: npx prisma migrate deploy
+        env:
+          DATABASE_URL: postgresql://booking_user:booking_password@localhost:5432/booking_db
 
       - name: Seed database
         working-directory: ./back
         run: npx prisma db seed
         env:
+          DATABASE_URL: postgresql://booking_user:booking_password@localhost:5432/booking_db
           ADMIN_EMAIL: admin@booking.com
           ADMIN_PASSWORD: Admin123!
 
