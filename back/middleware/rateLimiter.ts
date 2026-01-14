@@ -7,5 +7,9 @@ export const loginLimiter = rateLimit({
     "Trop de tentatives de connexion, veuillez réessayer dans 15 minutes",
   standardHeaders: true,
   legacyHeaders: false,
-  skipSuccessfulRequests: false,
+  skipSuccessfulRequests: true,
+  keyGenerator: (req) => {
+    const email = req.body?.email || "unknown";
+    return `${req.ip}-${email}`;
+  },
 });
