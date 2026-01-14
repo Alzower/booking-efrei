@@ -14,6 +14,11 @@ app.set("trust proxy", 1);
 
 app.use(express.json());
 app.use(cors());
+
+app.get("/api/health", (req, res) => {
+  res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
 app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/rooms", roomRouter);
