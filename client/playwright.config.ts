@@ -5,6 +5,7 @@ dotenv.config();
 
 export default defineConfig({
   testDir: "./tests",
+  globalTeardown: "./tests/global-teardown.ts",
 
   projects: [
     {

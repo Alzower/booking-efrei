@@ -1,9 +1,11 @@
 import { test, expect, firefox } from "@playwright/test";
-import { sharedRoomTestId } from "./test-helpers";
+import { sharedRoomName } from "./test-helpers";
 
 test("create reservation, verify in history, and delete", async () => {
   const browser = await firefox.launch({ headless: false, slowMo: 1000 });
-  const context = await browser.newContext();
+  const context = await browser.newContext({
+    storageState: ".auth/user.json",
+  });
   const page = await context.newPage();
   await page.goto("http://localhost:5173/dashboard");
   await expect(page).toHaveURL("http://localhost:5173/dashboard");
@@ -14,8 +16,18 @@ test("create reservation, verify in history, and delete", async () => {
 
   await page.waitForTimeout(2000);
 
-  console.log("Recherche de la salle avec testid:", sharedRoomTestId);
-  const salleLabel = page.getByTestId(sharedRoomTestId).first();
+  // Attendre que les salles se chargent dans le modal
+  await page.waitForSelector("label", { timeout: 10000 });
+
+  console.log("Recherche de la salle avec nom:", sharedRoomName);
+
+  // Débugger: afficher toutes les salles disponibles
+  const allLabels = await page.locator("label").allTextContents();
+  console.log("Salles disponibles:", allLabels);
+
+  const salleLabel = page
+    .locator(`label:has-text("${sharedRoomName}")`)
+    .first();
   await salleLabel.waitFor({ state: "visible", timeout: 10000 });
   await salleLabel.click();
 
