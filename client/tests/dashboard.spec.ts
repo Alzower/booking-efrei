@@ -2,7 +2,7 @@ import { test, expect, firefox } from "@playwright/test";
 import { sharedRoomName } from "./test-helpers";
 
 test("create reservation, verify in history, and delete", async () => {
-  const browser = await firefox.launch({ headless: false, slowMo: 1000 });
+  const browser = await firefox.launch({ headless: true });
   const context = await browser.newContext({
     storageState: ".auth/user.json",
   });

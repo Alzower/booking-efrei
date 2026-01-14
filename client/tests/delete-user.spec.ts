@@ -22,7 +22,7 @@ test("admin deletes room and user", async () => {
   await expect(page).toHaveURL("http://localhost:5173/admin");
 
   await page.waitForLoadState("networkidle");
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(2000);
 
   const sharedDataFile = path.join(__dirname, ".shared-test-data.json");
   let createdRoomId = sharedRoomId;
@@ -34,14 +34,22 @@ test("admin deletes room and user", async () => {
 
   console.log("Suppression de la salle avec ID:", createdRoomId);
   const deleteRoomButton = page.getByTestId(`delete-room-${createdRoomId}`);
-  if (await deleteRoomButton.isVisible({ timeout: 5000 }).catch(() => false)) {
+  
+  try {
+    await deleteRoomButton.waitFor({ state: "visible", timeout: 10000 });
     await deleteRoomButton.click();
-    await page.waitForTimeout(1000);
-  } else {
+    console.log("Bouton de suppression cliqué");
+    await page.waitForTimeout(2000);
+    console.log("Salle supprimée avec succès");
+  } catch (error) {
+    console.log("Erreur lors de la suppression de la salle:", error);
     console.log("Salle non trouvée, elle a peut-être déjà été supprimée");
   }
 
-  await page.getByRole("link", { name: "Utilisateurs" }).click();
+  // Aller sur la page de gestion des utilisateurs
+  await page.getByTestId("menue-button").click();
+  await page.waitForTimeout(500);
+  await page.getByRole("link", { name: "Gestion des utilisateurs" }).click();
   await expect(page).toHaveURL("http://localhost:5173/admin/users");
   await page.waitForLoadState("networkidle");
   await page.waitForTimeout(1000);

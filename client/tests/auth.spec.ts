@@ -4,7 +4,7 @@ import { sharedTestCredentials } from "./test-helpers";
 const { email, password } = sharedTestCredentials;
 
 test("homepage loads", async () => {
-  const browser = await firefox.launch({ headless: false, slowMo: 500 });
+  const browser = await firefox.launch({ headless: true, slowMo: 500 });
   const context = await browser.newContext();
   const page = await context.newPage();
   await page.goto("http://localhost:5173");

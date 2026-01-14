@@ -1,7 +1,7 @@
 import { test, expect, firefox } from "@playwright/test";
 
 test("update user profile", async () => {
-  const browser = await firefox.launch({ headless: false, slowMo: 500 });
+  const browser = await firefox.launch({ headless: true });
   const context = await browser.newContext({
     storageState: ".auth/user.json",
   });

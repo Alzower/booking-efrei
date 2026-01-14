@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 test("create room for user", async () => {
-  const browser = await firefox.launch({ headless: false, slowMo: 500 });
+  const browser = await firefox.launch({ headless: true });
   const context = await browser.newContext();
   const page = await context.newPage();
   await page.goto("http://localhost:5173");
@@ -70,7 +70,7 @@ test("create room for user", async () => {
 });
 
 test("edit room", async () => {
-  const browser = await firefox.launch({ headless: false, slowMo: 500 });
+  const browser = await firefox.launch({ headless: true });
   const context = await browser.newContext();
   const page = await context.newPage();
   await page.goto("http://localhost:5173");
