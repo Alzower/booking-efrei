@@ -4,8 +4,6 @@ import { findUserByEmail } from "../../helper/user-helper.ts";
 import jwt from "jsonwebtoken";
 
 export const loginController = async (req, res) => {
-  await new Promise((resolve) => setTimeout(resolve, 1500));
-
   const { email, password } = req.body;
 
   const user = await findUserByEmail(prisma, email);
