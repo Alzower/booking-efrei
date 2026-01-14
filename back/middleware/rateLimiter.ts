@@ -5,17 +5,16 @@ export const loginLimiter = rateLimit({
   max: 3,
   standardHeaders: true,
   legacyHeaders: false,
-  skipSuccessfulRequests: false,
-  skipFailedRequests: false,
   keyGenerator: (req) => {
-    const email = req.body?.email || "unknown";
-    console.log(`[Rate Limiter] Tracking: ${email}`);
-    return email;
+    const ip = req.ip || req.socket?.remoteAddress || "unknown";
+    const forwardedFor = req.headers["x-forwarded-for"];
+    const clientIp = forwardedFor ? forwardedFor.toString().split(",")[0] : ip;
+    console.log(`[Rate Limiter] Request from IP: ${clientIp}`);
+    return clientIp;
   },
   handler: (req, res) => {
-    const email = req.body?.email || "unknown";
-    console.log(`[Rate Limiter] ❌ BLOCKED - Email: ${email}`);
-    return res.status(429).json({
+    console.log(`[Rate Limiter] ❌ BLOCKED - Too many requests from this IP`);
+    res.status(429).json({
       error: "Trop de tentatives de connexion",
       message: "Veuillez réessayer dans 1 minute",
       retryAfter: 60,
