@@ -41,6 +41,10 @@ jobs:
         working-directory: ./back
         run: npm ci
 
+      - name: Generate Prisma Client
+        working-directory: ./back
+        run: npx prisma generate
+
       - name: Run Prisma migrations
         working-directory: ./back
         run: npx prisma migrate deploy
@@ -89,7 +93,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "npm"
 
       - name: Install backend dependencies
         working-directory: ./back
@@ -102,6 +105,10 @@ jobs:
       - name: Install Playwright browsers
         working-directory: ./client
         run: npx playwright install --with-deps firefox
+
+      - name: Generate Prisma Client
+        working-directory: ./back
+        run: npx prisma generate
 
       - name: Run Prisma migrations
         working-directory: ./back
@@ -179,6 +186,10 @@ jobs:
       - name: Install backend dependencies
         working-directory: ./back
         run: npm ci
+
+      - name: Generate Prisma Client
+        working-directory: ./back
+        run: npx prisma generate
 
       - name: Run Prisma migrations
         working-directory: ./back
