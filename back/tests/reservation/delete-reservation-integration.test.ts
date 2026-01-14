@@ -1,4 +1,4 @@
-import { vi, describe, it, expect, beforeEach, afterEach, beforeAll, afterAll, skip } from "vitest";
+import { vi, describe, it, expect, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
 import prisma from "../../db/prisma.ts";
 import jwt from "jsonwebtoken";
 import { deleteReservation } from "../../controller/reservation/delete-reservation.ts";
@@ -156,7 +156,6 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
   describe("Successful Reservation Deletion", () => {
     it("should delete own reservation successfully", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
@@ -187,7 +186,6 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
 
     it("should return HTTP 200 status on successful deletion", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
@@ -209,7 +207,6 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
 
     it("should return success message in response", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
@@ -233,7 +230,6 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
 
     it("should allow user to delete their own reservation", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
@@ -255,7 +251,6 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
 
     it("should delete reservation regardless of time to event", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       // Create a reservation very soon
@@ -287,7 +282,6 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
 
     it("should delete reservation for different rooms", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const startTime = new Date(Date.now() + 86400000);
@@ -321,7 +315,6 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
   describe("Reservation Not Found", () => {
     it("should return 404 when reservation does not exist", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
@@ -346,7 +339,6 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
 
     it("should return 404 for already deleted reservation", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
@@ -384,7 +376,6 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
 
     it("should return 404 with specific error message", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
@@ -412,13 +403,12 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
   describe("Authorization & Permission", () => {
     it("should return 403 when user tries to delete other user's reservation", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
-      // Create reservation for other user
+      // Create reservation for other user on different room to avoid unique constraint
       const startTime = new Date(Date.now() + 86400000);
       const endTime = new Date(startTime.getTime() + 3600000);
-      const otherRes = await createReservation(testRoom.id, otherUser.id, startTime, endTime);
+      const otherRes = await createReservation(otherRoom.id, otherUser.id, startTime, endTime);
 
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
@@ -448,13 +438,12 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
 
     it("should verify user owns the reservation before deleting", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
-      // Create reservation for other user
+      // Create reservation for other user on different room to avoid unique constraint
       const startTime = new Date(Date.now() + 86400000);
       const endTime = new Date(startTime.getTime() + 3600000);
-      const otherRes = await createReservation(testRoom.id, otherUser.id, startTime, endTime);
+      const otherRes = await createReservation(otherRoom.id, otherUser.id, startTime, endTime);
 
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
@@ -475,12 +464,11 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
 
     it("should include authorization error message", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const startTime = new Date(Date.now() + 86400000);
       const endTime = new Date(startTime.getTime() + 3600000);
-      const otherRes = await createReservation(testRoom.id, otherUser.id, startTime, endTime);
+      const otherRes = await createReservation(otherRoom.id, otherUser.id, startTime, endTime);
 
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
@@ -505,7 +493,6 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
   describe("Input Validation", () => {
     it("should return 400 when reservationId is not provided", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
@@ -530,7 +517,6 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
 
     it("should return 400 when reservationId is empty string", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
@@ -552,7 +538,6 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
 
     it("should return 400 when userId is not provided", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const req: any = {
@@ -577,7 +562,6 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
   describe("Database Error Handling", () => {
     it("should return 500 on database error during existence check", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
@@ -612,7 +596,6 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
 
     it("should return 500 on database error during deletion", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
@@ -646,7 +629,6 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
 
     it("should handle generic database errors gracefully", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
@@ -682,7 +664,6 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
   describe("Delete Reservation - Edge Cases", () => {
     it("should delete very old reservation", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       // Create reservation in past (for testing purposes)
@@ -720,7 +701,6 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
 
     it("should delete reservation with very long duration", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const startTime = new Date(Date.now() + 86400000);
@@ -751,7 +731,6 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
 
     it("should delete multiple reservations sequentially", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       // Create multiple reservations
@@ -804,7 +783,6 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
 
     it("should delete reservation with special characters in ID", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
@@ -829,7 +807,6 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
   describe("Response Structure", () => {
     it("should return response with message property on success", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
@@ -853,7 +830,6 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
 
     it("should return response with error property on failure", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
@@ -880,7 +856,6 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
   describe("User Context Verification", () => {
     it("should use authenticated user's ID for ownership check", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
@@ -903,7 +878,6 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
 
     it("should not allow user to delete if user context is missing", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const req: any = {
@@ -924,13 +898,12 @@ describe("Delete Reservation Integration Tests - deleteReservation (DELETE /:res
 
     it("should compare user IDs correctly for authorization", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
-      // Create reservation for different user
+      // Create reservation for different user on a different room to avoid unique constraint
       const startTime = new Date(Date.now() + 86400000);
       const endTime = new Date(startTime.getTime() + 3600000);
-      const otherRes = await createReservation(testRoom.id, otherUser.id, startTime, endTime);
+      const otherRes = await createReservation(otherRoom.id, otherUser.id, startTime, endTime);
 
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
 

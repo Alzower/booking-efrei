@@ -1,4 +1,4 @@
-import { vi, describe, it, expect, beforeEach, afterEach, beforeAll, afterAll, skip } from "vitest";
+import { vi, describe, it, expect, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
 import prisma from "../../db/prisma.ts";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -76,10 +76,6 @@ describe("Get User Integration Tests - getUser (GET /me)", () => {
   });
 
   it("should get current user profile with valid auth token", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
     const req: any = {
@@ -103,10 +99,6 @@ describe("Get User Integration Tests - getUser (GET /me)", () => {
   });
 
   it("should return 404 when user not found in database", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     // Use non-existent user ID
     const fakeUserId = "fake-user-id-12345";
     const token = generateToken(fakeUserId, "fake@example.com", jwtSecret);
@@ -131,10 +123,6 @@ describe("Get User Integration Tests - getUser (GET /me)", () => {
   });
 
   it("should handle missing user.id in request", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const req: any = {
       headers: {
         authorization: `Bearer some-token`,
@@ -156,10 +144,6 @@ describe("Get User Integration Tests - getUser (GET /me)", () => {
   });
 
   it("should return 500 on database error", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
     const req: any = {
@@ -179,10 +163,6 @@ describe("Get User Integration Tests - getUser (GET /me)", () => {
   });
 
   it("should successfully return different users with different tokens", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     // Create second user
     const secondUser = await createTestUser(`user2-${Date.now()}@example.com`, "USER");
 
@@ -227,10 +207,6 @@ describe("Get User Integration Tests - getUser (GET /me)", () => {
   });
 
   it("should return all user fields in response", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
     const req: any = {
@@ -257,10 +233,6 @@ describe("Get User Integration Tests - getUser (GET /me)", () => {
   });
 
   it("should work with both USER and ADMIN roles", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     // Create ADMIN user
     const adminUser = await createTestUser(`admin-${Date.now()}@example.com`, "ADMIN");
 
@@ -342,10 +314,6 @@ describe("Get Users Integration Tests - getUsers (GET /)", () => {
   });
 
   it("should return all users when called by admin with valid token", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
 
     const req: any = {
@@ -365,10 +333,6 @@ describe("Get Users Integration Tests - getUsers (GET /)", () => {
   });
 
   it("should return array of users with all fields", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
 
     const req: any = {
@@ -396,10 +360,6 @@ describe("Get Users Integration Tests - getUsers (GET /)", () => {
   });
 
   it("should include test users in the list", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
 
     const req: any = {
@@ -425,10 +385,6 @@ describe("Get Users Integration Tests - getUsers (GET /)", () => {
   });
 
   it("should handle empty database gracefully", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     // This test would need a separate database state
     // For now, we just verify the response is an array
     const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -448,10 +404,6 @@ describe("Get Users Integration Tests - getUsers (GET /)", () => {
   });
 
   it("should return 500 on database error", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
 
     const req: any = {
@@ -469,10 +421,6 @@ describe("Get Users Integration Tests - getUsers (GET /)", () => {
   });
 
   it("should differentiate between USER and ADMIN in returned list", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
 
     const req: any = {
@@ -496,10 +444,6 @@ describe("Get Users Integration Tests - getUsers (GET /)", () => {
   });
 
   it("should handle multiple admin requests", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     // Create a second admin
     const admin2 = await createTestUser(`admin2-${Date.now()}@example.com`, "ADMIN");
 
@@ -541,10 +485,6 @@ describe("Get Users Integration Tests - getUsers (GET /)", () => {
   });
 
   it("should return consistent results on multiple calls", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
 
     // Call getUsers multiple times
@@ -602,10 +542,6 @@ describe("Middleware Authorization Tests - getUser & getUsers", () => {
   });
 
   it("should use req.user set by userIsAuth middleware for getUser", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     // Simulate userIsAuth middleware setting req.user
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
@@ -624,10 +560,6 @@ describe("Middleware Authorization Tests - getUser & getUsers", () => {
   });
 
   it("should access req.user.id property in getUser", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
     const req: any = {
@@ -647,10 +579,6 @@ describe("Middleware Authorization Tests - getUser & getUsers", () => {
   });
 
   it("should accept any user role for getUser (USER or ADMIN)", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     // Create admin
     const adminUser = await createTestUser(`admin-auth-${Date.now()}@example.com`, "ADMIN");
 

@@ -237,23 +237,7 @@ describe("updateRoom controller", () => {
         expect(prismaMock.room.findUnique).not.toHaveBeenCalled();
     });
 
-    it("should update capacity to 0 (validation allows 0, coalescing uses 0)", async () => {
-        const existingRoom = {
-            id: "room1",
-            name: "Conference Room",
-            capacity: 15,
-            equipment: ["projector"],
-            createdAt: new Date(),
-        };
-
-        const updatedRoom = {
-            id: "room1",
-            name: "Conference Room",
-            capacity: 0,
-            equipment: ["projector"],
-            createdAt: new Date(),
-        };
-
+    it("should return 400 when capacity is 0 (validation rejects 0 and negative)", async () => {
         const req: any = {
             params: { id: "room1" },
             body: {
@@ -267,23 +251,22 @@ describe("updateRoom controller", () => {
 
         const prismaRoomFindUniqueMock = prismaMock.room.findUnique as Mock;
         const prismaRoomUpdateMock = prismaMock.room.update as Mock;
-        prismaRoomFindUniqueMock.mockResolvedValue(existingRoom);
-        prismaRoomUpdateMock.mockResolvedValue(updatedRoom);
+        prismaRoomFindUniqueMock.mockResolvedValue({
+            id: "room1",
+            name: "Conference Room",
+            capacity: 15,
+            equipment: ["projector"],
+            createdAt: new Date(),
+        });
 
         await updateRoom(req, res);
 
-        // capacity = 0 is falsy so "capacity && capacity <= 0" is false - no validation error
-        // But 0 ?? 15 coalesces to 0 (0 is not null/undefined), so capacity becomes 0
-        expect(prismaRoomUpdateMock).toHaveBeenCalledWith({
-            where: { id: "room1" },
-            data: {
-                name: "Conference Room",
-                capacity: 0,
-                equipment: ["projector"],
-            },
+        // capacity <= 0 validation check rejects 0
+        expect(status).toHaveBeenCalledWith(400);
+        expect(json).toHaveBeenCalledWith({
+            error: "Capacité de salle invalide"
         });
-        expect(status).toHaveBeenCalledWith(200);
-        expect(json).toHaveBeenCalledWith(updatedRoom);
+        expect(prismaRoomUpdateMock).not.toHaveBeenCalled();
     });
 
     it("should return 400 when capacity is negative", async () => {

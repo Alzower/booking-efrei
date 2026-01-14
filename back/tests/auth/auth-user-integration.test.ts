@@ -1,4 +1,4 @@
-import { vi, describe, it, expect, beforeEach, afterEach, beforeAll, afterAll, skip } from "vitest";
+import { vi, describe, it, expect, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
 import prisma from "../../db/prisma.ts";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -103,10 +103,6 @@ describe("Auth Integration Tests - loginController", () => {
   });
 
   it("should login successfully with correct credentials", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const req: any = {
       body: { email: testUserEmail, password: testUserPassword },
     };
@@ -520,10 +516,6 @@ describe("Auth Integration Tests - Rate Limiting (loginLimiter middleware)", () 
   });
 
   it("should allow up to 5 login requests per minute from same IP", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const clientIp = "192.168.1.100";
     
     // Try 5 successful requests
@@ -540,10 +532,6 @@ describe("Auth Integration Tests - Rate Limiting (loginLimiter middleware)", () 
   });
 
   it("should reject login with 429 status when rate limit exceeded", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const clientIp = "192.168.1.101";
     
     // Exceed rate limit
@@ -578,10 +566,6 @@ describe("Auth Integration Tests - Rate Limiting (loginLimiter middleware)", () 
   });
 
   it("should track requests by IP address correctly", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const ipA = "10.0.0.1";
     const ipB = "10.0.0.2";
 
@@ -603,10 +587,6 @@ describe("Auth Integration Tests - Rate Limiting (loginLimiter middleware)", () 
   });
 
   it("should extract client IP from X-Forwarded-For header", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const req: any = {
       headers: { "x-forwarded-for": "203.0.113.100, 198.51.100.178" },
       ip: "127.0.0.1",
@@ -617,10 +597,6 @@ describe("Auth Integration Tests - Rate Limiting (loginLimiter middleware)", () 
   });
 
   it("should fallback to direct IP when X-Forwarded-For not present", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const req: any = {
       headers: {},
       ip: "192.168.1.50",
@@ -631,10 +607,6 @@ describe("Auth Integration Tests - Rate Limiting (loginLimiter middleware)", () 
   });
 
   it("should return retry-after value when rate limit reached", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const clientIp = "172.16.0.50";
     
     // Fill up rate limit
@@ -649,10 +621,6 @@ describe("Auth Integration Tests - Rate Limiting (loginLimiter middleware)", () 
   });
 
   it("should allow new requests after rate limit window resets", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const clientIp = "10.20.30.40";
     
     // Use up rate limit
@@ -670,10 +638,6 @@ describe("Auth Integration Tests - Rate Limiting (loginLimiter middleware)", () 
   });
 
   it("should handle rapid sequential login attempts from same user", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const clientIp = "172.20.0.10";
     const successfulLogins: number[] = [];
 

@@ -1,4 +1,4 @@
-import { vi, describe, it, expect, beforeEach, afterEach, beforeAll, afterAll, skip } from "vitest";
+import { vi, describe, it, expect, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
 import prisma from "../../db/prisma.ts";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -76,10 +76,6 @@ describe("Delete User Integration Tests - deleteUser (DELETE /me)", () => {
   });
 
   it("should delete user successfully", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
     const req: any = {
@@ -111,10 +107,6 @@ describe("Delete User Integration Tests - deleteUser (DELETE /me)", () => {
   });
 
   it("should return confirmation message on successful deletion", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
     const req: any = {
@@ -139,10 +131,6 @@ describe("Delete User Integration Tests - deleteUser (DELETE /me)", () => {
   });
 
   it("should access req.user set by userIsAuth middleware", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
     // Verify middleware would set req.user correctly
@@ -169,10 +157,6 @@ describe("Delete User Integration Tests - deleteUser (DELETE /me)", () => {
   });
 
   it("should delete only the authenticated user", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     // Create second user
     const secondUser = await createTestUser(`second-delete-${Date.now()}@example.com`, "Second User");
 
@@ -219,10 +203,6 @@ describe("Delete User Integration Tests - deleteUser (DELETE /me)", () => {
   });
 
   it("should delete user with ADMIN role", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     // Create admin user
     const adminUser = await createTestUser(`admin-delete-${Date.now()}@example.com`, "Admin User");
     await prisma.user.update({
@@ -260,10 +240,6 @@ describe("Delete User Integration Tests - deleteUser (DELETE /me)", () => {
   });
 
   it("should handle idempotent delete (delete already deleted user)", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
     const req: any = {
@@ -293,10 +269,6 @@ describe("Delete User Integration Tests - deleteUser (DELETE /me)", () => {
   });
 
   it("should return 500 on database error", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
     const req: any = {
@@ -327,10 +299,6 @@ describe("Delete User Integration Tests - deleteUser (DELETE /me)", () => {
   });
 
   it("should handle missing req.user gracefully", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const req: any = {
       headers: {},
       user: undefined, // No user
@@ -348,10 +316,6 @@ describe("Delete User Integration Tests - deleteUser (DELETE /me)", () => {
   });
 
   it("should handle null req.user.id gracefully", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const req: any = {
       headers: {},
       user: { id: null, email: "test@example.com" },
@@ -369,10 +333,6 @@ describe("Delete User Integration Tests - deleteUser (DELETE /me)", () => {
   });
 
   it("should work correctly with different user IDs", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     // Create multiple users and delete each one
     const users = await Promise.all([
       createTestUser(`user1-delete-${Date.now()}@example.com`),
@@ -414,10 +374,6 @@ describe("Delete User Integration Tests - deleteUser (DELETE /me)", () => {
   });
 
   it("should delete user and remove from database immediately", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     // Verify user exists before deletion
     let existingUser = await prisma.user.findUnique({
       where: { id: testUser.id },
@@ -449,10 +405,6 @@ describe("Delete User Integration Tests - deleteUser (DELETE /me)", () => {
   });
 
   it("should respond with success after deletion", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
     const req: any = {
@@ -478,10 +430,6 @@ describe("Delete User Integration Tests - deleteUser (DELETE /me)", () => {
   });
 
   it("should delete user even if deletion takes time", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
     const req: any = {
@@ -512,10 +460,6 @@ describe("Delete User Integration Tests - deleteUser (DELETE /me)", () => {
   });
 
   it("should handle invalid user ID format gracefully", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const req: any = {
       headers: {},
       user: { id: "invalid-uuid-format", email: "test@example.com" },

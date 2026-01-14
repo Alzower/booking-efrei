@@ -1,4 +1,4 @@
-import { vi, describe, it, expect, beforeEach, afterEach, beforeAll, afterAll, skip } from "vitest";
+import { vi, describe, it, expect, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
 import prisma from "../../db/prisma.ts";
 import bcrypt from "bcrypt";
 import { createUser } from "../../controller/user/create-user.ts";
@@ -47,10 +47,6 @@ describe("Create User Integration Tests - createUser (POST /)", () => {
   });
 
   it("should create user successfully with valid email and password", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const testEmail = `create-valid-${Date.now()}@example.com`;
     testEmails.push(testEmail);
 
@@ -78,10 +74,6 @@ describe("Create User Integration Tests - createUser (POST /)", () => {
   });
 
   it("should reject user creation with invalid email", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const req: any = {
       body: {
         email: "invalid-email-format",
@@ -103,10 +95,6 @@ describe("Create User Integration Tests - createUser (POST /)", () => {
   });
 
   it("should reject user creation with weak password (less than 12 characters)", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const testEmail = `weak-pass-${Date.now()}@example.com`;
 
     const req: any = {
@@ -130,10 +118,6 @@ describe("Create User Integration Tests - createUser (POST /)", () => {
   });
 
   it("should reject password without uppercase letter", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const testEmail = `no-upper-${Date.now()}@example.com`;
 
     const req: any = {
@@ -157,10 +141,6 @@ describe("Create User Integration Tests - createUser (POST /)", () => {
   });
 
   it("should reject password without lowercase letter", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const testEmail = `no-lower-${Date.now()}@example.com`;
 
     const req: any = {
@@ -184,10 +164,6 @@ describe("Create User Integration Tests - createUser (POST /)", () => {
   });
 
   it("should reject password without number", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const testEmail = `no-number-${Date.now()}@example.com`;
 
     const req: any = {
@@ -211,10 +187,6 @@ describe("Create User Integration Tests - createUser (POST /)", () => {
   });
 
   it("should reject password without special character", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const testEmail = `no-special-${Date.now()}@example.com`;
 
     const req: any = {
@@ -238,10 +210,6 @@ describe("Create User Integration Tests - createUser (POST /)", () => {
   });
 
   it("should reject invalid role (only ADMIN allowed when specified)", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const testEmail = `invalid-role-${Date.now()}@example.com`;
 
     const req: any = {
@@ -266,10 +234,6 @@ describe("Create User Integration Tests - createUser (POST /)", () => {
   });
 
   it("should allow role to be omitted (defaults to USER)", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const testEmail = `no-role-${Date.now()}@example.com`;
     testEmails.push(testEmail);
 
@@ -294,10 +258,6 @@ describe("Create User Integration Tests - createUser (POST /)", () => {
   });
 
   it("should hash password before storing in database", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const testEmail = `hash-test-${Date.now()}@example.com`;
     testEmails.push(testEmail);
 
@@ -331,10 +291,6 @@ describe("Create User Integration Tests - createUser (POST /)", () => {
   });
 
   it("should reject duplicate email addresses", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const testEmail = `duplicate-${Date.now()}@example.com`;
     testEmails.push(testEmail);
 
@@ -378,10 +334,6 @@ describe("Create User Integration Tests - createUser (POST /)", () => {
   });
 
   it("should exclude password from response", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const testEmail = `no-password-${Date.now()}@example.com`;
     testEmails.push(testEmail);
 
@@ -405,10 +357,6 @@ describe("Create User Integration Tests - createUser (POST /)", () => {
   });
 
   it("should handle missing email field", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const req: any = {
       body: {
         name: "No Email User",
@@ -428,10 +376,6 @@ describe("Create User Integration Tests - createUser (POST /)", () => {
   });
 
   it("should handle missing password field", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const testEmail = `no-password-field-${Date.now()}@example.com`;
 
     const req: any = {
@@ -453,10 +397,6 @@ describe("Create User Integration Tests - createUser (POST /)", () => {
   });
 
   it("should handle missing name field", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const testEmail = `no-name-${Date.now()}@example.com`;
 
     const req: any = {
@@ -480,10 +420,6 @@ describe("Create User Integration Tests - createUser (POST /)", () => {
   });
 
   it("should accept special characters in name", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const testEmail = `special-name-${Date.now()}@example.com`;
     testEmails.push(testEmail);
 
@@ -507,10 +443,6 @@ describe("Create User Integration Tests - createUser (POST /)", () => {
   });
 
   it("should handle very long email addresses", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const testEmail = `${Array(50).fill("a").join("")}@example.com`;
     testEmails.push(testEmail);
 
@@ -534,10 +466,6 @@ describe("Create User Integration Tests - createUser (POST /)", () => {
   });
 
   it("should handle email with plus addressing", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const testEmail = `user+tag-${Date.now()}@example.com`;
     testEmails.push(testEmail);
 
@@ -561,10 +489,6 @@ describe("Create User Integration Tests - createUser (POST /)", () => {
   });
 
   it("should validate password requirements comprehensively", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const validPasswords = [
       "ValidPass123!",
       "ComplexPass777!",
@@ -595,10 +519,6 @@ describe("Create User Integration Tests - createUser (POST /)", () => {
   });
 
   it("should return user with all expected fields", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const testEmail = `full-fields-${Date.now()}@example.com`;
     testEmails.push(testEmail);
 
@@ -634,10 +554,6 @@ describe("Create User Integration Tests - createUser (POST /)", () => {
   });
 
   it("should create multiple users independently", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const users = [
       { email: `multi1-${Date.now()}@example.com`, name: "User 1", password: "ValidPass123!" },
       { email: `multi2-${Date.now()}@example.com`, name: "User 2", password: "AnotherPass456!" },

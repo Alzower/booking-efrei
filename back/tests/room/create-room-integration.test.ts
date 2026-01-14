@@ -1,4 +1,4 @@
-import { vi, describe, it, expect, beforeEach, afterEach, beforeAll, afterAll, skip } from "vitest";
+import { vi, describe, it, expect, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
 import prisma from "../../db/prisma.ts";
 import jwt from "jsonwebtoken";
 import { createRoom } from "../../controller/room/create-room.ts";
@@ -95,7 +95,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
   describe("Successful Room Creation", () => {
     it("should create room successfully with valid data", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -132,7 +131,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should trim whitespace from room name", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -162,7 +160,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should create room with minimum capacity of 1", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -193,7 +190,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should create room with large capacity", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -224,7 +220,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should create room with empty equipment array", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -255,7 +250,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should create room with single equipment item", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -286,7 +280,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should create room with multiple equipment items", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -318,7 +311,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should return correct HTTP status 201 for creation", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -348,7 +340,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should persist room in database", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -389,7 +380,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
   describe("Room Name Validation", () => {
     it("should return 400 when name is missing", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -418,7 +408,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should return 400 when name is empty string", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -448,7 +437,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should return 400 when name is whitespace only", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -478,7 +466,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should accept room name with special characters", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -509,7 +496,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should accept room name with very long string", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const longName = Array(200).fill("A").join("");
@@ -544,7 +530,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
   describe("Capacity Validation", () => {
     it("should return 400 when capacity is missing", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -573,7 +558,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should return 400 when capacity is zero", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -603,7 +587,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should return 400 when capacity is negative", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -633,7 +616,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should accept decimal capacity (converted to Int)", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -669,7 +651,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
   describe("Equipment Validation", () => {
     it("should return 400 when equipment is not an array", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -699,7 +680,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should return 400 when equipment is object", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -729,7 +709,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should return 400 when equipment array contains non-string", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -759,7 +738,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should return 400 when equipment array contains empty string", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -789,7 +767,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should return 400 when equipment array contains whitespace-only string", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -819,7 +796,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should accept equipment with special characters", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -850,7 +826,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should accept equipment with numbers and symbols", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -884,7 +859,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
   describe("Database Error Handling", () => {
     it("should return 500 on database error", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -927,7 +901,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
   describe("Edge Cases", () => {
     it("should create multiple rooms in sequence", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomIds: string[] = [];
@@ -969,7 +942,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should create room with many equipment items", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const equipment = Array.from({ length: 20 }, (_, i) => `Equipment${i + 1}`);
@@ -1001,7 +973,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should create room with duplicate equipment names (if allowed)", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {
@@ -1033,7 +1004,6 @@ describe("Create Room Integration Tests - createRoom (POST /)", () => {
 
     it("should create room returns proper structure with ID and timestamp", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const roomData = {

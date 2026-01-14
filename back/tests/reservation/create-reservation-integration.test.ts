@@ -1,4 +1,4 @@
-import { vi, describe, it, expect, beforeEach, afterEach, beforeAll, afterAll, skip } from "vitest";
+import { vi, describe, it, expect, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
 import prisma from "../../db/prisma.ts";
 import jwt from "jsonwebtoken";
 import { createReservation } from "../../controller/reservation/create-reservation.ts";
@@ -147,10 +147,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
   // ==================== SUCCESSFUL CREATION TESTS ====================
   describe("Successful Reservation Creation", () => {
     it("should create reservation successfully", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime = new Date(Date.now() + 86400000); // Tomorrow
       const endTime = new Date(startTime.getTime() + 3600000); // +1 hour
 
@@ -187,10 +183,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
     });
 
     it("should return HTTP 201 status on successful creation", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime = new Date(Date.now() + 86400000);
       const endTime = new Date(startTime.getTime() + 3600000);
 
@@ -216,10 +208,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
     });
 
     it("should return created reservation with all fields", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime = new Date(Date.now() + 86400000);
       const endTime = new Date(startTime.getTime() + 3600000);
 
@@ -252,10 +240,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
     });
 
     it("should create reservation with correct status", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime = new Date(Date.now() + 86400000);
       const endTime = new Date(startTime.getTime() + 3600000);
 
@@ -282,10 +266,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
     });
 
     it("should create multiple reservations for same user in different rooms", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
       // First reservation
@@ -338,10 +318,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
     });
 
     it("should create reservation with multiple hours duration", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime = new Date(Date.now() + 86400000);
       const endTime = new Date(startTime.getTime() + 7200000); // +2 hours
 
@@ -374,10 +350,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
   // ==================== VALIDATION ERROR TESTS ====================
   describe("Reservation Validation", () => {
     it("should return 400 when userId is not provided", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime = new Date(Date.now() + 86400000);
       const endTime = new Date(startTime.getTime() + 3600000);
 
@@ -404,10 +376,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
     });
 
     it("should return 400 when roomId is not provided", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime = new Date(Date.now() + 86400000);
       const endTime = new Date(startTime.getTime() + 3600000);
 
@@ -436,10 +404,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
     });
 
     it("should return 400 when startTime is after endTime", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const endTime = new Date(Date.now() + 86400000);
       const startTime = new Date(endTime.getTime() + 3600000); // After endTime
 
@@ -468,10 +432,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
     });
 
     it("should return 400 when startTime is in the past", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime = new Date(Date.now() - 3600000); // 1 hour ago
       const endTime = new Date(startTime.getTime() + 7200000);
 
@@ -500,10 +460,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
     });
 
     it("should return 400 when endTime is in the past", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const endTime = new Date(Date.now() - 3600000); // 1 hour ago
       const startTime = new Date(endTime.getTime() - 3600000);
 
@@ -529,10 +485,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
     });
 
     it("should return 400 for same startTime and endTime", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime = new Date(Date.now() + 86400000);
       const endTime = startTime; // Same as startTime
 
@@ -561,10 +513,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
   // ==================== OVERLAP/CONFLICT TESTS ====================
   describe("Reservation Overlap Detection", () => {
     it("should return 400 when room is already booked for time slot", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime1 = new Date(Date.now() + 86400000);
       const endTime1 = new Date(startTime1.getTime() + 3600000);
 
@@ -597,10 +545,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
     });
 
     it("should return 400 when new reservation partially overlaps", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime1 = new Date(Date.now() + 86400000);
       const endTime1 = new Date(startTime1.getTime() + 3600000);
 
@@ -633,10 +577,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
     });
 
     it("should return 400 when new reservation contains existing reservation", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime1 = new Date(Date.now() + 86400000);
       const endTime1 = new Date(startTime1.getTime() + 3600000);
 
@@ -669,10 +609,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
     });
 
     it("should allow reservation if room is free at different time", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime1 = new Date(Date.now() + 86400000);
       const endTime1 = new Date(startTime1.getTime() + 3600000);
 
@@ -705,10 +641,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
     });
 
     it("should allow reservation in different room at same time", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime = new Date(Date.now() + 86400000);
       const endTime = new Date(startTime.getTime() + 3600000);
 
@@ -738,10 +670,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
     });
 
     it("should allow back-to-back reservations (no gap)", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime1 = new Date(Date.now() + 86400000);
       const endTime1 = new Date(startTime1.getTime() + 3600000);
 
@@ -779,7 +707,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
   describe("Database Error Handling", () => {
     it("should return 500 on database error during overlap check", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const startTime = new Date(Date.now() + 86400000);
@@ -821,7 +748,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
 
     it("should return 500 on database error during reservation creation", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const startTime = new Date(Date.now() + 86400000);
@@ -863,7 +789,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
   describe("Create Reservation - Edge Cases", () => {
     it("should create reservation with very long duration", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const startTime = new Date(Date.now() + 86400000);
@@ -892,7 +817,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
 
     it("should create reservation with minimum duration (1 minute)", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const startTime = new Date(Date.now() + 86400000);
@@ -921,7 +845,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
 
     it("should create reservation far in the future", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const startTime = new Date(Date.now() + 31536000000); // 1 year from now
@@ -950,7 +873,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
 
     it("should accept various valid date formats", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const startTime = new Date(Date.now() + 86400000);
@@ -979,7 +901,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
 
     it("should create reservation with milliseconds in timestamp", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const startTime = new Date(Date.now() + 86400000 + 123); // With milliseconds
@@ -1011,7 +932,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
   describe("Response Structure", () => {
     it("should return created reservation with correct user and room IDs", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const startTime = new Date(Date.now() + 86400000);
@@ -1042,7 +962,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
 
     it("should return correct timestamps in response", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const startTime = new Date(Date.now() + 86400000);
@@ -1079,7 +998,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
   describe("Authorization & Permission", () => {
     it("should create reservation for authenticated user", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const startTime = new Date(Date.now() + 86400000);
@@ -1109,7 +1027,6 @@ describe("Create Reservation Integration Tests - createReservation (POST /)", ()
 
     it("should use authenticated user's ID, not one from body", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const otherUser = await createTestUser(`other-${Date.now()}@example.com`);
