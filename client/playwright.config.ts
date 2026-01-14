@@ -15,6 +15,7 @@ export default defineConfig({
     {
       name: "auth-tests",
       testMatch: /auth\.spec\.ts/,
+      dependencies: ["setup"],
     },
     {
       name: "create-room-tests",

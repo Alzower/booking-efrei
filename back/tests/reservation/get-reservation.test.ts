@@ -392,7 +392,7 @@ describe("getAllReservationsByRoomId controller", () => {
         await getAllReservationsByRoomId(req, res);
 
         expect(prismaReservationFindManyMock).toHaveBeenCalledWith({
-            where: { id: "room1" },
+            where: { roomId: "room1" },
         });
         expect(status).toHaveBeenCalledWith(200);
         expect(json).toHaveBeenCalledWith(reservations);
@@ -670,7 +670,7 @@ describe("isAdmin middleware for getAllReservationsByRoomId", () => {
         await getAllReservationsByRoomId(req, res2);
 
         expect(prismaReservationFindManyMock).toHaveBeenCalledWith({
-            where: { id: "room1" },
+            where: { roomId: "room1" },
         });
         expect(status).toHaveBeenCalledWith(200);
         expect(json).toHaveBeenCalledWith(reservations);

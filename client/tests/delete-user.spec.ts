@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 test("admin deletes room and user", async () => {
-  const browser = await firefox.launch({ headless: false, slowMo: 500 });
+  const browser = await firefox.launch({ headless: true });
   const context = await browser.newContext();
   const page = await context.newPage();
 

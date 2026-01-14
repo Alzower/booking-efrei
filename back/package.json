@@ -10,6 +10,9 @@
     "postinstall": "npx prisma generate",
     "test": "vitest"
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "author": "Glenn GUILLARD | Efrei",
   "license": "ISC",
   "dependencies": {
