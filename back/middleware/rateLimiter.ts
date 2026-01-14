@@ -1,6 +1,5 @@
 import rateLimit from "express-rate-limit";
 
-// Rate limiter pour les tentatives de connexion
 export const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 5,
