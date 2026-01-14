@@ -34,12 +34,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "npm"
-          cache-dependency-path: back/package-lock.json
 
       - name: Install dependencies
         working-directory: ./back
-        run: npm ci
+        run: npm install
 
       - name: Generate Prisma Client
         working-directory: ./back
@@ -96,11 +94,11 @@ jobs:
 
       - name: Install backend dependencies
         working-directory: ./back
-        run: npm ci
+        run: npm install
 
       - name: Install frontend dependencies
         working-directory: ./client
-        run: npm ci
+        run: npm install
 
       - name: Install Playwright browsers
         working-directory: ./client
@@ -183,8 +181,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "npm"
-          cache-dependency-path: back/package-lock.json
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -193,7 +189,7 @@ jobs:
 
       - name: Install backend dependencies
         working-directory: ./back
-        run: npm ci
+        run: npm install
 
       - name: Generate Prisma Client
         working-directory: ./back
