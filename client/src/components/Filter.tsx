@@ -15,6 +15,7 @@ export default function Filter({
   onReservationCreated,
 }: FilterProps) {
   const [rooms, setRooms] = useState<Room[]>([]);
+  const [reservations, setReservations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<string>("");
@@ -27,6 +28,7 @@ export default function Filter({
 
   useEffect(() => {
     loadRooms();
+    loadReservations();
   }, []);
 
   const loadRooms = async () => {
@@ -40,6 +42,34 @@ export default function Filter({
     } finally {
       setLoading(false);
     }
+  };
+
+  const loadReservations = async () => {
+    try {
+      const data = await reservationService.getAllReservations();
+      setReservations(data);
+    } catch (err) {
+      console.error("Erreur lors du chargement des réservations:", err);
+    }
+  };
+
+  const isRoomAvailable = (
+    roomId: string,
+    startDateTime: Date,
+    endDateTime: Date
+  ): boolean => {
+    if (!selectedDate) return false;
+
+    const hasConflict = reservations.some((reservation) => {
+      if (reservation.roomId !== roomId) return false;
+
+      const reservationStart = new Date(reservation.startTime);
+      const reservationEnd = new Date(reservation.endTime);
+
+      return startDateTime < reservationEnd && endDateTime > reservationStart;
+    });
+
+    return !hasConflict;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -62,18 +92,25 @@ export default function Filter({
       return;
     }
 
+    const startDateTime = new Date(selectedDate);
+    startDateTime.setHours(0, 0, 0, 0);
+    const [startHour, startMinute] = startTime.split(":");
+    startDateTime.setHours(parseInt(startHour), parseInt(startMinute), 0, 0);
+
+    const endDateTime = new Date(selectedDate);
+    endDateTime.setHours(0, 0, 0, 0);
+    const [endHour, endMinute] = endTime.split(":");
+    endDateTime.setHours(parseInt(endHour), parseInt(endMinute), 0, 0);
+
+    if (!isRoomAvailable(selectedRoom, startDateTime, endDateTime)) {
+      setError(
+        "Cette salle est déjà réservée pour ce créneau horaire. Veuillez choisir une autre salle ou un autre horaire."
+      );
+      return;
+    }
+
     try {
       setSubmitting(true);
-
-      const startDateTime = new Date(selectedDate);
-      startDateTime.setHours(0, 0, 0, 0);
-      const [startHour, startMinute] = startTime.split(":");
-      startDateTime.setHours(parseInt(startHour), parseInt(startMinute), 0, 0);
-
-      const endDateTime = new Date(selectedDate);
-      endDateTime.setHours(0, 0, 0, 0);
-      const [endHour, endMinute] = endTime.split(":");
-      endDateTime.setHours(parseInt(endHour), parseInt(endMinute), 0, 0);
 
       const newReservation = await reservationService.createReservation({
         roomId: selectedRoom,
@@ -95,6 +132,8 @@ export default function Filter({
       setStartTime("09:00");
       setEndTime("10:00");
       setSelectedColor("#3b82f6");
+
+      await loadReservations();
 
       if (onReservationCreated) {
         onReservationCreated();
@@ -141,6 +180,43 @@ export default function Filter({
       : rooms.filter((room) =>
           selectedEquipments.every((eq) => room.equipment.includes(eq))
         );
+
+  const getRoomAvailability = (roomId: string): boolean => {
+    if (!selectedDate || !startTime || !endTime) return true;
+
+    const startDateTime = new Date(selectedDate);
+    startDateTime.setHours(0, 0, 0, 0);
+    const [startHour, startMinute] = startTime.split(":");
+    startDateTime.setHours(parseInt(startHour), parseInt(startMinute), 0, 0);
+
+    const endDateTime = new Date(selectedDate);
+    endDateTime.setHours(0, 0, 0, 0);
+    const [endHour, endMinute] = endTime.split(":");
+    endDateTime.setHours(parseInt(endHour), parseInt(endMinute), 0, 0);
+
+    return isRoomAvailable(roomId, startDateTime, endDateTime);
+  };
+
+  const getRoomReservationsForDate = (roomId: string) => {
+    if (!selectedDate) return [];
+
+    const selectedDateStart = new Date(selectedDate);
+    selectedDateStart.setHours(0, 0, 0, 0);
+    const selectedDateEnd = new Date(selectedDate);
+    selectedDateEnd.setHours(23, 59, 59, 999);
+
+    return reservations.filter((reservation) => {
+      if (reservation.roomId !== roomId) return false;
+
+      const reservationStart = new Date(reservation.startTime);
+      const reservationEnd = new Date(reservation.endTime);
+
+      return (
+        reservationStart >= selectedDateStart &&
+        reservationStart <= selectedDateEnd
+      );
+    });
+  };
 
   const colors = [
     { name: "Bleu", value: "#3b82f6" },
@@ -243,48 +319,164 @@ export default function Filter({
                 </p>
               ) : (
                 <div className="space-y-2">
-                  {filteredRooms.map((room) => (
-                    <label
-                      key={room.id}
-                      className={`flex items-start gap-3 p-3 cursor-pointer rounded-lg transition-colors duration-200 border-2 ${
-                        selectedRoom === room.id
-                          ? "border-blue-600 bg-blue-50"
-                          : "border-gray-200 hover:bg-gray-50"
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name="room"
-                        value={room.id}
-                        checked={selectedRoom === room.id}
-                        onChange={(e) => setSelectedRoom(e.target.value)}
-                        className="w-5 h-5 cursor-pointer accent-blue-600 mt-0.5"
-                      />
-                      <div className="flex-1">
-                        <span className="text-sm font-medium text-gray-800 block">
-                          {room.name}
-                        </span>
-                        <span className="text-xs text-gray-600">
-                          Capacité: {room.capacity} personnes
-                        </span>
-                        {room.equipment.length > 0 && (
-                          <div className="flex flex-wrap gap-1 mt-2">
-                            {room.equipment.map((eq, idx) => (
-                              <span
-                                key={idx}
-                                className="px-2 py-0.5 bg-gray-200 text-gray-700 text-xs rounded"
-                              >
-                                {eq}
-                              </span>
-                            ))}
+                  {filteredRooms.map((room) => {
+                    const isAvailable = getRoomAvailability(room.id);
+                    const roomReservations = getRoomReservationsForDate(
+                      room.id
+                    );
+                    return (
+                      <label
+                        key={room.id}
+                        className={`flex items-start gap-3 p-3 rounded-lg transition-colors duration-200 border-2 ${
+                          !isAvailable
+                            ? "border-red-200 bg-red-50 cursor-not-allowed"
+                            : selectedRoom === room.id
+                            ? "border-blue-600 bg-blue-50 cursor-pointer"
+                            : "border-gray-200 hover:bg-gray-50 cursor-pointer"
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name="room"
+                          value={room.id}
+                          checked={selectedRoom === room.id}
+                          onChange={(e) => setSelectedRoom(e.target.value)}
+                          disabled={!isAvailable}
+                          className="w-5 h-5 cursor-pointer accent-blue-600 mt-0.5 disabled:cursor-not-allowed"
+                        />
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-sm font-medium text-gray-800">
+                              {room.name}
+                            </span>
                           </div>
-                        )}
-                      </div>
-                    </label>
-                  ))}
+                          <span className="text-xs text-gray-600 block mb-1">
+                            Capacité: {room.capacity} personnes
+                          </span>
+                          {roomReservations.length > 0 && (
+                            <div className="mt-2 mb-2">
+                              <span className="text-xs font-semibold text-gray-700 block mb-1">
+                                Créneaux réservés aujourd'hui:
+                              </span>
+                              <div className="flex flex-wrap gap-1">
+                                {roomReservations.map((reservation) => {
+                                  const start = new Date(reservation.startTime);
+                                  const end = new Date(reservation.endTime);
+                                  return (
+                                    <span
+                                      key={reservation.id}
+                                      className="px-2 py-0.5 bg-orange-100 text-orange-800 text-xs rounded border border-orange-300"
+                                    >
+                                      {start.toLocaleTimeString("fr-FR", {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                      })}{" "}
+                                      -{" "}
+                                      {end.toLocaleTimeString("fr-FR", {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                      })}
+                                    </span>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          )}
+                          {!isAvailable && (
+                            <div className="mt-2">
+                              <span className="px-2 py-0.5 bg-red-600 text-white text-xs rounded-full font-semibold">
+                                Conflit avec votre créneau
+                              </span>
+                            </div>
+                          )}
+                          {room.equipment.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mt-2">
+                              {room.equipment.map((eq, idx) => (
+                                <span
+                                  key={idx}
+                                  className="px-2 py-0.5 bg-gray-200 text-gray-700 text-xs rounded"
+                                >
+                                  {eq}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </label>
+                    );
+                  })}
                 </div>
               )}
             </div>
+
+            {selectedRoom && (
+              <div className="mb-6">
+                <h3 className="text-base font-semibold text-gray-800 mb-4">
+                  Détails de la salle sélectionnée
+                </h3>
+                {(() => {
+                  const room = filteredRooms.find((r) => r.id === selectedRoom);
+                  if (!room) return null;
+                  return (
+                    <div className="p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg border border-blue-200">
+                      <h4 className="font-semibold text-gray-900 mb-3">
+                        {room.name}
+                      </h4>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex items-center text-gray-700">
+                          <svg
+                            className="w-4 h-4 mr-2 text-blue-600"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                            />
+                          </svg>
+                          <span>
+                            Capacité: <strong>{room.capacity} personnes</strong>
+                          </span>
+                        </div>
+                        {room.equipment.length > 0 && (
+                          <div>
+                            <div className="flex items-start text-gray-700 mb-2">
+                              <svg
+                                className="w-4 h-4 mr-2 mt-0.5 text-blue-600"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                                />
+                              </svg>
+                              <span>Équipements disponibles:</span>
+                            </div>
+                            <div className="flex flex-wrap gap-1 ml-6">
+                              {room.equipment.map((eq, idx) => (
+                                <span
+                                  key={idx}
+                                  className="px-2 py-1 bg-white text-blue-700 text-xs rounded border border-blue-300 font-medium"
+                                >
+                                  {eq}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
+            )}
 
             <div className="mb-6">
               <h3 className="text-base font-semibold text-gray-800 mb-4">

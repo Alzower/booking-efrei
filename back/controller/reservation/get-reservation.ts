@@ -59,8 +59,26 @@ export const getAllReservationsByRoomId = async (req, res) => {
     }
 
     const reservations = await prisma.reservation.findMany({
-      where: { id: roomId },
+      where: { roomId: roomId },
     });
+
+    res.status(200).json(reservations);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Erreur lors de la récupération des réservations" });
+  }
+};
+
+export const getAllReservations = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(400).json({ error: "ID utilisateur invalide" });
+    }
+
+    const reservations = await prisma.reservation.findMany();
 
     res.status(200).json(reservations);
   } catch (error) {

@@ -16,21 +16,35 @@ export default function Dashboard() {
   const [selectedReservation, setSelectedReservation] =
     useState<Reservation | null>(null);
   const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [allReservations, setAllReservations] = useState<Reservation[]>([]);
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentUserId, setCurrentUserId] = useState<string>("");
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        setCurrentUserId(payload.id);
+      } catch (err) {
+        console.error("Erreur lors du décodage du token:", err);
+      }
+    }
     loadData();
   }, []);
 
   const loadData = async () => {
     try {
       setLoading(true);
-      const [reservationsData, roomsData] = await Promise.all([
-        reservationService.getUserReservations(),
-        roomService.getRooms(),
-      ]);
-      setReservations(reservationsData);
+      const [userReservationsData, allReservationsData, roomsData] =
+        await Promise.all([
+          reservationService.getUserReservations(),
+          reservationService.getAllReservations(),
+          roomService.getRooms(),
+        ]);
+      setReservations(userReservationsData);
+      setAllReservations(allReservationsData);
       setRooms(roomsData);
     } catch (err) {
       console.error("Erreur lors du chargement des données:", err);
@@ -65,28 +79,44 @@ export default function Dashboard() {
     return room ? room.name : "Salle inconnue";
   };
 
-  const events = reservations.map((reservation) => {
+  const events = allReservations.map((reservation) => {
     const start = new Date(reservation.startTime);
     const end = new Date(reservation.endTime);
+    const isUserReservation = reservation.userId === currentUserId;
 
-    const reservationColors = JSON.parse(
-      localStorage.getItem("reservationColors") || "{}"
-    );
+    let backgroundColor: string;
+    let borderColor: string;
+    let textColor: string;
 
-    const backgroundColor = reservationColors[reservation.id] || "#3b82f6";
-
-    const borderColor =
-      backgroundColor === "#3b82f6" ? "#2563eb" : backgroundColor;
+    if (isUserReservation) {
+      const reservationColors = JSON.parse(
+        localStorage.getItem("reservationColors") || "{}"
+      );
+      backgroundColor = reservationColors[reservation.id] || "#3b82f6";
+      borderColor = backgroundColor === "#3b82f6" ? "#2563eb" : backgroundColor;
+      textColor = "#ffffff";
+    } else {
+      backgroundColor = "#9ca3af";
+      borderColor = "#6b7280";
+      textColor = "#ffffff";
+    }
 
     return {
       id: reservation.id,
-      title: getRoomName(reservation.roomId),
+      title: isUserReservation
+        ? getRoomName(reservation.roomId)
+        : `${getRoomName(reservation.roomId)} (Réservée)`,
       start: start.toISOString(),
       end: end.toISOString(),
       backgroundColor: backgroundColor,
       borderColor: borderColor,
-      textColor: "#ffffff",
-      color: backgroundColor, // Propriété principale pour FullCalendar
+      textColor: textColor,
+      color: backgroundColor,
+      classNames: isUserReservation ? [] : ["event-other-user"],
+      extendedProps: {
+        isUserReservation: isUserReservation,
+        roomName: getRoomName(reservation.roomId),
+      },
     };
   });
 
@@ -104,7 +134,7 @@ export default function Dashboard() {
           ) : (
             <FullCalendar
               plugins={[dayGridPlugin, interactionPlugin]}
-              initialView="dayGridMonth"
+              initialView="dayGridWeek"
               headerToolbar={{
                 left: "prev,next today",
                 center: "title",
@@ -116,6 +146,17 @@ export default function Dashboard() {
               eventClick={handleEventClick}
               selectable={true}
               events={events}
+              eventDidMount={(info) => {
+                const isUserReservation =
+                  info.event.extendedProps.isUserReservation;
+                if (!isUserReservation) {
+                  info.el.setAttribute(
+                    "title",
+                    "Cette salle a déjà été réservée"
+                  );
+                  info.el.style.cursor = "not-allowed";
+                }
+              }}
               eventContent={(eventInfo) => {
                 const start = new Date(eventInfo.event.start!);
                 const end = new Date(eventInfo.event.end!);

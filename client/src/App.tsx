@@ -8,6 +8,7 @@ import EditProfile from "./pages/EditProfile";
 import HistoryPage from "./pages/HistoryPage";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminUsers from "./pages/AdminUsers";
+import RoomDetails from "./pages/RoomDetails";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/admin/users" element={<AdminUsers />} />
         <Route path="/profile/edit" element={<EditProfile />} />
         <Route path="/history" element={<HistoryPage />} />
+        <Route path="/rooms/:id" element={<RoomDetails />} />
       </Routes>
     </BrowserRouter>
   );

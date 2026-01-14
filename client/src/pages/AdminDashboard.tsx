@@ -19,6 +19,7 @@ function AdminDashboard() {
   const [success, setSuccess] = useState("");
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingRoom, setEditingRoom] = useState<Room | null>(null);
+  const [viewingRoom, setViewingRoom] = useState<Room | null>(null);
 
   const [formData, setFormData] = useState<CreateRoomData>({
     name: "",
@@ -253,19 +254,27 @@ function AdminDashboard() {
                   </div>
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex flex-col gap-2">
                   <button
-                    onClick={() => openEditModal(room)}
-                    className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+                    onClick={() => setViewingRoom(room)}
+                    className="w-full px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors font-medium"
                   >
-                    Modifier
+                    Voir détails
                   </button>
-                  <button
-                    onClick={() => handleDeleteRoom(room.id)}
-                    className="flex-1 px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors font-medium"
-                  >
-                    Supprimer
-                  </button>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => openEditModal(room)}
+                      className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+                    >
+                      Modifier
+                    </button>
+                    <button
+                      onClick={() => handleDeleteRoom(room.id)}
+                      className="flex-1 px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors font-medium"
+                    >
+                      Supprimer
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -411,6 +420,131 @@ function AdminDashboard() {
                   </button>
                 </div>
               </form>
+            </div>
+          </div>
+        )}
+
+        {viewingRoom && (
+          <div className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
+              <div className="flex justify-between items-start mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Détails de la salle
+                </h2>
+                <button
+                  onClick={() => setViewingRoom(null)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    {viewingRoom.name}
+                  </h3>
+                  <p className="text-sm text-gray-600">ID: {viewingRoom.id}</p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <p className="text-sm text-gray-600 mb-1">Capacité</p>
+                    <p className="text-2xl font-bold text-gray-900">
+                      {viewingRoom.capacity}
+                      <span className="text-sm font-normal text-gray-600 ml-1">
+                        personnes
+                      </span>
+                    </p>
+                  </div>
+
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <p className="text-sm text-gray-600 mb-1">Équipements</p>
+                    <p className="text-2xl font-bold text-gray-900">
+                      {viewingRoom.equipment.length}
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-3">
+                    Équipements disponibles
+                  </h4>
+                  {viewingRoom.equipment.length > 0 ? (
+                    <div className="flex flex-wrap gap-2">
+                      {viewingRoom.equipment.map((eq, idx) => (
+                        <span
+                          key={idx}
+                          className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full"
+                        >
+                          {eq}
+                        </span>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-gray-600">Aucun équipement spécifique</p>
+                  )}
+                </div>
+
+                <div className="border-t pt-4">
+                  <p className="text-xs text-gray-500">
+                    Créée le:{" "}
+                    {new Date(viewingRoom.createdAt).toLocaleDateString(
+                      "fr-FR",
+                      {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      }
+                    )}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Dernière modification:{" "}
+                    {new Date(viewingRoom.updatedAt).toLocaleDateString(
+                      "fr-FR",
+                      {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      }
+                    )}
+                  </p>
+                </div>
+
+                <div className="flex gap-3 mt-6">
+                  <button
+                    onClick={() => {
+                      setViewingRoom(null);
+                      openEditModal(viewingRoom);
+                    }}
+                    className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold"
+                  >
+                    Modifier
+                  </button>
+                  <button
+                    onClick={() => setViewingRoom(null)}
+                    className="flex-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-semibold"
+                  >
+                    Fermer
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         )}
