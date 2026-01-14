@@ -1,4 +1,4 @@
-import { vi, describe, it, expect, beforeEach, afterEach, beforeAll, afterAll, skip } from "vitest";
+import { vi, describe, it, expect, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
 import prisma from "../../db/prisma.ts";
 import jwt from "jsonwebtoken";
 import { updateRoom } from "../../controller/room/update-room.ts";
@@ -121,7 +121,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
   describe("Successful Room Updates", () => {
     it("should update room name successfully", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const newName = "Updated Conference Room";
@@ -154,7 +153,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should update room capacity successfully", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const newCapacity = 25;
@@ -186,7 +184,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should update room equipment successfully", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const newEquipment = ["Large Screen", "Conference Phone", "Video Camera"];
@@ -218,7 +215,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should update multiple fields at once", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const updateData = {
@@ -259,7 +255,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should preserve original values when only updating one field", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const originalCapacity = testRoom.capacity;
@@ -289,7 +284,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should update with empty equipment array", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -314,7 +308,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should update room name with special characters", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const specialName = "Salle de Conférence #3 - Café";
@@ -340,7 +333,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should return HTTP 200 on successful update", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -363,7 +355,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should return updated room with all fields", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -394,7 +385,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
   describe("Update Room Validation", () => {
     it("should return 400 when name is empty string", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -420,7 +410,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should return 400 when capacity is zero", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -446,7 +435,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should return 400 when capacity is negative", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -472,7 +460,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should return 404 when room does not exist", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -498,7 +485,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should allow null values for partial updates (skip null fields)", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const originalName = testRoom.name;
@@ -524,7 +510,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should allow undefined fields (not included in update)", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const originalCapacity = testRoom.capacity;
@@ -551,7 +536,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should handle update with whitespace-only name", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -576,7 +560,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should update capacity with minimum value of 1", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -601,7 +584,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should update capacity with large value", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -629,7 +611,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
   describe("Partial Updates (Nullish Coalescing)", () => {
     it("should keep original name when name not provided", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const originalName = testRoom.name;
@@ -654,7 +635,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should keep original capacity when capacity not provided", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const originalCapacity = testRoom.capacity;
@@ -679,7 +659,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should keep original equipment when equipment not provided", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const originalEquipment = testRoom.equipment;
@@ -704,7 +683,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should handle empty body (no updates)", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const originalName = testRoom.name;
@@ -738,7 +716,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
   describe("Consecutive Updates", () => {
     it("should handle consecutive updates to same room", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -779,7 +756,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should update different rooms independently", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const secondRoom = await createTestRoom("Second Room", 15, ["TV"]);
@@ -844,7 +820,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
   describe("Database Error Handling", () => {
     it("should return 500 on database error during update", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -880,7 +855,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should return 500 on database error during existence check", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -918,7 +892,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
   describe("Update Room - Edge Cases", () => {
     it("should update room name with very long string", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const longName = Array(300).fill("A").join("");
@@ -944,7 +917,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should update equipment with many items", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const equipment = Array.from({ length: 50 }, (_, i) => `Equipment ${i + 1}`);
@@ -970,7 +942,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should preserve createdAt timestamp during update", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const originalCreatedAt = testRoom.createdAt;
@@ -997,7 +968,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should maintain room ID during update", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const originalId = testRoom.id;
@@ -1022,7 +992,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
 
     it("should update with numeric capacity string", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -1049,7 +1018,6 @@ describe("Update Room Integration Tests - updateRoom (PUT /:id)", () => {
   describe("Response Structure", () => {
     it("should return updated room with correct structure", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);

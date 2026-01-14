@@ -1,4 +1,4 @@
-import { vi, describe, it, expect, beforeEach, afterEach, beforeAll, afterAll, skip } from "vitest";
+import { vi, describe, it, expect, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
 import prisma from "../../db/prisma.ts";
 import jwt from "jsonwebtoken";
 import { deleteRoom } from "../../controller/room/delete-room.ts";
@@ -172,7 +172,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
   describe("Successful Room Deletion", () => {
     it("should delete room successfully", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -204,7 +203,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
 
     it("should delete room with reservations (cascade delete)", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       // Create multiple reservations for the room
@@ -247,7 +245,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
 
     it("should return HTTP 200 status on successful deletion", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -269,7 +266,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
 
     it("should return success message in response", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -293,7 +289,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
 
     it("should delete room with empty equipment array", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const emptyRoom = await createTestRoom("Empty Equipment Room", 5, []);
@@ -322,7 +317,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
 
     it("should delete room regardless of room properties", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       // Create room with many properties
@@ -359,7 +353,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
   describe("Room Not Found", () => {
     it("should return 404 when room does not exist", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -384,7 +377,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
 
     it("should return 404 for already deleted room", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -424,7 +416,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
 
     it("should return 404 with specific error message for non-existent room", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -452,7 +443,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
   describe("Reservation Cascade Delete", () => {
     it("should delete associated reservations when room is deleted", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const startTime = new Date("2026-02-01T14:00:00Z");
@@ -484,7 +474,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
 
     it("should delete multiple reservations for the same room", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       // Create 5 reservations for the same room
@@ -522,7 +511,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
 
     it("should not affect reservations for other rooms", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       // Create another room
@@ -581,7 +569,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
   describe("Database Error Handling", () => {
     it("should return 500 on database error during existence check", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -616,7 +603,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
 
     it("should return 500 on database error during reservation deletion", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -650,7 +636,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
 
     it("should return 500 on database error during room deletion", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -684,7 +669,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
 
     it("should handle generic database errors gracefully", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -722,7 +706,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
   describe("Delete Room - Edge Cases", () => {
     it("should delete room with special characters in name", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const specialRoom = await createTestRoom("Salle de Conférence #3 - Café", 10, []);
@@ -751,7 +734,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
 
     it("should delete room with many equipment items", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const equipment = Array.from({ length: 50 }, (_, i) => `Equipment ${i + 1}`);
@@ -781,7 +763,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
 
     it("should delete room with minimum capacity", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const smallRoom = await createTestRoom("Small Room", 1, []);
@@ -810,7 +791,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
 
     it("should delete room with large capacity", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const largeRoom = await createTestRoom("Large Room", 5000, ["Audio System", "Lighting"]);
@@ -839,7 +819,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
 
     it("should delete room with reservations at different times", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       // Create reservations across different dates and times
@@ -888,7 +867,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
   describe("Response Structure", () => {
     it("should return response with message property", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -912,7 +890,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
 
     it("should return error response with error property on failure", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
@@ -939,7 +916,6 @@ describe("Delete Room Integration Tests - deleteRoom (DELETE /:id)", () => {
   describe("Multiple Room Deletions", () => {
     it("should delete multiple different rooms", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const room1 = await createTestRoom("Room 1", 10, ["TV"]);

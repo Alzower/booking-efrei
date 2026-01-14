@@ -1,4 +1,4 @@
-import { vi, describe, it, expect, beforeEach, afterEach, beforeAll, afterAll, skip } from "vitest";
+import { vi, describe, it, expect, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
 import prisma from "../../db/prisma.ts";
 import jwt from "jsonwebtoken";
 import {
@@ -177,10 +177,6 @@ describe("Get Reservation Integration Tests", () => {
   // ==================== GET RESERVATIONS BY USER ====================
   describe("getReservationsByUser (GET /)", () => {
     it("should return user's reservations successfully", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime = new Date("2026-02-01T10:00:00Z");
       const endTime = new Date("2026-02-01T11:00:00Z");
       const reservation = await createReservation(testRoom.id, testUser.id, startTime, endTime);
@@ -206,10 +202,6 @@ describe("Get Reservation Integration Tests", () => {
     });
 
     it("should return empty array when user has no reservations", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
       const req: any = {
@@ -231,7 +223,6 @@ describe("Get Reservation Integration Tests", () => {
 
     it("should return 400 when userId is not provided", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const req: any = {
@@ -252,10 +243,6 @@ describe("Get Reservation Integration Tests", () => {
     });
 
     it("should return multiple reservations for same user", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       // Create 3 reservations for the same user
       const startTime1 = new Date("2026-02-01T10:00:00Z");
       const endTime1 = new Date("2026-02-01T11:00:00Z");
@@ -289,10 +276,6 @@ describe("Get Reservation Integration Tests", () => {
     });
 
     it("should return only user's reservations, not others", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const otherUser = await createTestUser(`other-user-${Date.now()}@example.com`);
 
       try {
@@ -329,10 +312,6 @@ describe("Get Reservation Integration Tests", () => {
     });
 
     it("should return reservations with complete data", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime = new Date("2026-02-01T10:00:00Z");
       const endTime = new Date("2026-02-01T11:00:00Z");
       await createReservation(testRoom.id, testUser.id, startTime, endTime);
@@ -364,10 +343,6 @@ describe("Get Reservation Integration Tests", () => {
   // ==================== GET RESERVATION AFTER DATE ====================
   describe("getReservationAfterDate (GET /:date)", () => {
     it("should return reservations starting from given date", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime1 = new Date("2026-02-01T10:00:00Z");
       const endTime1 = new Date("2026-02-01T11:00:00Z");
       await createReservation(testRoom.id, testUser.id, startTime1, endTime1);
@@ -402,10 +377,6 @@ describe("Get Reservation Integration Tests", () => {
     });
 
     it("should return 400 for invalid date format", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
       const req: any = {
@@ -428,7 +399,6 @@ describe("Get Reservation Integration Tests", () => {
 
     it("should return 400 when userId is not provided", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const req: any = {
@@ -447,10 +417,6 @@ describe("Get Reservation Integration Tests", () => {
     });
 
     it("should return empty array when no reservations after date", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime = new Date("2026-02-01T10:00:00Z");
       const endTime = new Date("2026-02-01T11:00:00Z");
       await createReservation(testRoom.id, testUser.id, startTime, endTime);
@@ -475,10 +441,6 @@ describe("Get Reservation Integration Tests", () => {
     });
 
     it("should accept ISO date format", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime = new Date("2026-02-01T10:00:00Z");
       const endTime = new Date("2026-02-01T11:00:00Z");
       await createReservation(testRoom.id, testUser.id, startTime, endTime);
@@ -501,10 +463,6 @@ describe("Get Reservation Integration Tests", () => {
     });
 
     it("should include reservations starting exactly at given date", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const filterDate = new Date("2026-02-01T10:00:00Z");
       const startTime = filterDate;
       const endTime = new Date(filterDate.getTime() + 60 * 60 * 1000);
@@ -533,10 +491,6 @@ describe("Get Reservation Integration Tests", () => {
   // ==================== GET ALL RESERVATIONS BY ROOM ID ====================
   describe("getAllReservationsByRoomId (GET /room/:roomId) - Admin only", () => {
     it("should return all reservations for a room", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime1 = new Date("2026-02-01T10:00:00Z");
       const endTime1 = new Date("2026-02-01T11:00:00Z");
       await createReservation(testRoom.id, testUser.id, startTime1, endTime1);
@@ -574,10 +528,6 @@ describe("Get Reservation Integration Tests", () => {
     });
 
     it("should return 400 when roomId is not provided", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
 
       const req: any = {
@@ -599,10 +549,6 @@ describe("Get Reservation Integration Tests", () => {
     });
 
     it("should return empty array when room has no reservations", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
 
       const req: any = {
@@ -624,10 +570,6 @@ describe("Get Reservation Integration Tests", () => {
     });
 
     it("should only return reservations for specific room", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime1 = new Date("2026-02-01T10:00:00Z");
       const endTime1 = new Date("2026-02-01T11:00:00Z");
       await createReservation(testRoom.id, testUser.id, startTime1, endTime1);
@@ -660,10 +602,6 @@ describe("Get Reservation Integration Tests", () => {
   // ==================== GET ALL RESERVATIONS ====================
   describe("getAllReservations (GET /all)", () => {
     it("should return all reservations from all users", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime1 = new Date("2026-02-01T10:00:00Z");
       const endTime1 = new Date("2026-02-01T11:00:00Z");
       await createReservation(testRoom.id, testUser.id, startTime1, endTime1);
@@ -700,7 +638,6 @@ describe("Get Reservation Integration Tests", () => {
 
     it("should return 400 when userId is not provided", async () => {
       if (!databaseAvailable) {
-        skip();
       }
 
       const req: any = {
@@ -718,10 +655,6 @@ describe("Get Reservation Integration Tests", () => {
     });
 
     it("should return array with all reservations", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime = new Date("2026-02-01T10:00:00Z");
       const endTime = new Date("2026-02-01T11:00:00Z");
       await createReservation(testRoom.id, testUser.id, startTime, endTime);
@@ -748,10 +681,6 @@ describe("Get Reservation Integration Tests", () => {
   // ==================== DATABASE ERROR TESTS ====================
   describe("Database Error Handling", () => {
     it("should return 500 on database error in getReservationsByUser", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
       const req: any = {
@@ -781,10 +710,6 @@ describe("Get Reservation Integration Tests", () => {
     });
 
     it("should return 500 on database error in getReservationAfterDate", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
       const req: any = {
@@ -812,10 +737,6 @@ describe("Get Reservation Integration Tests", () => {
     });
 
     it("should return 500 on database error in getAllReservationsByRoomId", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const token = generateToken(adminUser.id, adminUser.email, jwtSecret);
 
       const req: any = {
@@ -843,10 +764,6 @@ describe("Get Reservation Integration Tests", () => {
     });
 
     it("should return 500 on database error in getAllReservations", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
       const req: any = {
@@ -876,10 +793,6 @@ describe("Get Reservation Integration Tests", () => {
   // ==================== RESPONSE STRUCTURE TESTS ====================
   describe("Response Structure", () => {
     it("should return array of reservations with complete data", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime = new Date("2026-02-01T10:00:00Z");
       const endTime = new Date("2026-02-01T11:00:00Z");
       await createReservation(testRoom.id, testUser.id, startTime, endTime);
@@ -911,10 +824,6 @@ describe("Get Reservation Integration Tests", () => {
   // ==================== EDGE CASES ====================
   describe("Get Reservation - Edge Cases", () => {
     it("should handle multiple reservations at the same time in different rooms", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       const startTime = new Date("2026-02-01T10:00:00Z");
       const endTime = new Date("2026-02-01T11:00:00Z");
 
@@ -940,10 +849,6 @@ describe("Get Reservation Integration Tests", () => {
     });
 
     it("should filter correctly by date with many reservations", async () => {
-      if (!databaseAvailable) {
-        skip();
-      }
-
       // Create reservations across multiple months
       const dates = [
         new Date("2026-01-15T10:00:00Z"),

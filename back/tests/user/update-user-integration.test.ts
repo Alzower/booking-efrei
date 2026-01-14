@@ -1,4 +1,4 @@
-import { vi, describe, it, expect, beforeEach, afterEach, beforeAll, afterAll, skip } from "vitest";
+import { vi, describe, it, expect, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
 import prisma from "../../db/prisma.ts";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -76,10 +76,6 @@ describe("Update User Integration Tests - updateUser (PUT /me)", () => {
   });
 
   it("should update user email successfully", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const newEmail = `updated-${Date.now()}@example.com`;
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
@@ -106,10 +102,6 @@ describe("Update User Integration Tests - updateUser (PUT /me)", () => {
   });
 
   it("should update user name successfully", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const newName = "Updated Name User";
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
@@ -136,10 +128,6 @@ describe("Update User Integration Tests - updateUser (PUT /me)", () => {
   });
 
   it("should update user password successfully", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const plainNewPassword = "NewPass123!";
     const hashedNewPassword = await bcrypt.hash(plainNewPassword, 10);
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
@@ -165,10 +153,6 @@ describe("Update User Integration Tests - updateUser (PUT /me)", () => {
   });
 
   it("should update multiple fields at once", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const newEmail = `multi-update-${Date.now()}@example.com`;
     const newName = "Fully Updated User";
     const hashedNewPassword = await bcrypt.hash("NewPass456!", 10);
@@ -203,10 +187,6 @@ describe("Update User Integration Tests - updateUser (PUT /me)", () => {
   });
 
   it("should update with empty body (no changes)", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const originalEmail = testUser.email;
     const originalName = testUser.name;
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
@@ -230,10 +210,6 @@ describe("Update User Integration Tests - updateUser (PUT /me)", () => {
   });
 
   it("should access req.user set by userIsAuth middleware", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const newName = "Middleware Test User";
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
@@ -255,10 +231,6 @@ describe("Update User Integration Tests - updateUser (PUT /me)", () => {
   });
 
   it("should not expose password in response", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const hashedNewPassword = await bcrypt.hash("NewPass123!", 10);
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
@@ -280,10 +252,6 @@ describe("Update User Integration Tests - updateUser (PUT /me)", () => {
   });
 
   it("should maintain user role during update", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const newEmail = `maintain-role-${Date.now()}@example.com`;
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
@@ -303,10 +271,6 @@ describe("Update User Integration Tests - updateUser (PUT /me)", () => {
   });
 
   it("should maintain timestamps correctly", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const originalCreatedAt = testUser.createdAt;
     const newName = "Timestamp Test User";
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
@@ -328,10 +292,6 @@ describe("Update User Integration Tests - updateUser (PUT /me)", () => {
   });
 
   it("should handle update for different users independently", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     // Create second user
     const secondUser = await createTestUser(`second-user-${Date.now()}@example.com`, "Second User");
 
@@ -391,10 +351,6 @@ describe("Update User Integration Tests - updateUser (PUT /me)", () => {
   });
 
   it("should handle update with special characters in name", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const specialName = "François d'Amélie-Müller";
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
@@ -414,10 +370,6 @@ describe("Update User Integration Tests - updateUser (PUT /me)", () => {
   });
 
   it("should handle update with very long name", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const longName = Array(100).fill("A").join("");
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
@@ -437,10 +389,6 @@ describe("Update User Integration Tests - updateUser (PUT /me)", () => {
   });
 
   it("should handle update with very long email", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const longEmail = `${Array(50).fill("a").join("")}@example.com`;
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
@@ -460,10 +408,6 @@ describe("Update User Integration Tests - updateUser (PUT /me)", () => {
   });
 
   it("should handle update with null values (set to undefined)", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
     const req: any = {
@@ -484,10 +428,6 @@ describe("Update User Integration Tests - updateUser (PUT /me)", () => {
   });
 
   it("should return 500 on database error", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
     const req: any = {
@@ -518,10 +458,6 @@ describe("Update User Integration Tests - updateUser (PUT /me)", () => {
   });
 
   it("should return all user fields in response", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const newName = "All Fields Test User";
     const token = generateToken(testUser.id, testUser.email, jwtSecret);
 
@@ -548,10 +484,6 @@ describe("Update User Integration Tests - updateUser (PUT /me)", () => {
   });
 
   it("should handle consecutive updates", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     const newName1 = "First Update";
     const newName2 = "Second Update";
     const newName3 = "Third Update";
@@ -613,10 +545,6 @@ describe("Update User Integration Tests - updateUser (PUT /me)", () => {
   });
 
   it("should work with ADMIN role users", async () => {
-    if (!databaseAvailable) {
-      skip();
-    }
-
     // Create admin user
     const adminUser = await createTestUser(`admin-update-${Date.now()}@example.com`, "Admin User");
     await prisma.user.update({
