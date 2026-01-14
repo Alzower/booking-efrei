@@ -108,26 +108,27 @@ jobs:
         working-directory: ./back
         run: npx prisma generate
 
+      - name: Create .env file for backend
+        working-directory: ./back
+        run: |
+          echo "DATABASE_URL=postgresql://booking_user:booking_password@localhost:5432/booking_db" > .env
+          echo "JWT_SECRET=test-jwt-secret-key-for-ci-pipeline-123456" >> .env
+          echo "PORT=3000" >> .env
+
       - name: Run Prisma migrations
         working-directory: ./back
         run: npx prisma migrate deploy
-        env:
-          DATABASE_URL: postgresql://booking_user:booking_password@localhost:5432/booking_db
 
       - name: Seed database
         working-directory: ./back
         run: npx prisma db seed
         env:
-          DATABASE_URL: postgresql://booking_user:booking_password@localhost:5432/booking_db
           ADMIN_EMAIL: admin@booking.com
           ADMIN_PASSWORD: Admin123!
 
       - name: Start backend server
         working-directory: ./back
         run: |
-          echo "DATABASE_URL=postgresql://booking_user:booking_password@localhost:5432/booking_db" > .env
-          echo "JWT_SECRET=test-jwt-secret-key-for-ci-pipeline-123456" >> .env
-          echo "PORT=3000" >> .env
           npm run dev &
           echo "Waiting for server to be ready..."
           for i in {1..30}; do
