@@ -34,7 +34,7 @@ test("admin deletes room and user", async () => {
 
   console.log("Suppression de la salle avec ID:", createdRoomId);
   const deleteRoomButton = page.getByTestId(`delete-room-${createdRoomId}`);
-  
+
   try {
     await deleteRoomButton.waitFor({ state: "visible", timeout: 10000 });
     await deleteRoomButton.click();
