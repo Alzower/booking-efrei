@@ -1,4 +1,7 @@
 import { defineConfig } from "@playwright/test";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export default defineConfig({
   testDir: "./tests",
@@ -13,9 +16,25 @@ export default defineConfig({
       testMatch: /auth\.spec\.ts/,
     },
     {
+      name: "create-room-tests",
+      testMatch: /create-room\.spec\.ts/,
+    },
+    {
+      name: "dashboard-tests",
+      testMatch: /dashboard\.spec\.ts/,
+      dependencies: ["setup", "create-room-tests"],
+      use: {
+        storageState: ".auth/user.json",
+      },
+    },
+    {
       name: "authenticated-tests",
       testMatch: /.*\.spec\.ts/,
-      testIgnore: /auth\.spec\.ts/,
+      testIgnore: [
+        /auth\.spec\.ts/,
+        /create-room\.spec\.ts/,
+        /dashboard\.spec\.ts/,
+      ],
       dependencies: ["setup"],
       use: {
         storageState: ".auth/user.json",
@@ -25,7 +44,7 @@ export default defineConfig({
 
   use: {
     browserName: "firefox",
-    headless: false,
+    headless: true,
     viewport: { width: 1280, height: 720 },
     screenshot: "only-on-failure",
     video: "retain-on-failure",

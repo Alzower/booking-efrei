@@ -189,6 +189,7 @@ export default function EventDetails({
           <button
             onClick={handleDelete}
             disabled={deleting}
+            data-testid="delete-reservation-button"
             className="bg-red-600 text-white font-semibold text-sm px-6 py-3 rounded-lg hover:bg-red-700 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red-600/20 transition-all duration-200 border-2 border-red-600 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
           >
             {deleting ? "Annulation..." : "Annuler la réservation"}

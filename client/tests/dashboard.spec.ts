@@ -1,7 +1,8 @@
 import { test, expect, firefox } from "@playwright/test";
+import { sharedRoomTestId } from "./test-helpers";
 
-test("dashboard is accessible when logged in", async () => {
-  const browser = await firefox.launch({ headless: false, slowMo: 5000 });
+test("create reservation, verify in history, and delete", async () => {
+  const browser = await firefox.launch({ headless: false, slowMo: 1000 });
   const context = await browser.newContext();
   const page = await context.newPage();
   await page.goto("http://localhost:5173/dashboard");
@@ -9,7 +10,32 @@ test("dashboard is accessible when logged in", async () => {
 
   await page.waitForSelector(".fc-daygrid-day");
 
-  await page.locator(".fc-daygrid-day").first().click();
+  await page.locator(".fc-daygrid-day").last().click();
+
+  await page.waitForTimeout(2000);
+
+  console.log("Recherche de la salle avec testid:", sharedRoomTestId);
+  const salleLabel = page.getByTestId(sharedRoomTestId).first();
+  await salleLabel.waitFor({ state: "visible", timeout: 10000 });
+  await salleLabel.click();
+
+  await page.getByTestId("reservation-submit-button").click();
+
+  await page.waitForTimeout(3000);
+
+  const calendarEvent = page.locator(".fc-event").first();
+  await calendarEvent.waitFor({ state: "visible", timeout: 10000 });
+  await calendarEvent.click();
+
+  await page.waitForTimeout(1000);
+
+  page.on("dialog", (dialog) => dialog.accept());
+
+  const deleteButton = page.getByTestId("delete-reservation-button");
+  await deleteButton.waitFor({ state: "visible", timeout: 5000 });
+  await deleteButton.click();
+
+  await page.waitForTimeout(2000);
 
   await browser.close();
 });

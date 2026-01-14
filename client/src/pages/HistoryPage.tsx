@@ -303,6 +303,7 @@ function HistoryPage() {
                     {reservation.status === "upcoming" && (
                       <button
                         onClick={() => handleCancelReservation(reservation.id)}
+                        data-testid={`cancel-reservation-${reservation.id}`}
                         className="mt-6 w-full px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors font-medium"
                       >
                         Annuler la réservation
