@@ -85,7 +85,7 @@ test("edit room", async () => {
   await page.waitForLoadState("networkidle");
   await page.waitForTimeout(1000);
 
-  const editButton = page.locator('[data-testid^="edit-room-"]').first();
+  const editButton = page.locator(`button[data-testid^="edit-room-"]`).first();
   await expect(editButton).toBeVisible();
   await editButton.click();
 
@@ -102,6 +102,14 @@ test("edit room", async () => {
 
   await page.getByTestId("submit-room-button").click();
 
+  await expect(page.getByText("Salle mise à jour avec succès!")).toBeVisible();
+
+  // Revert changes to not break other tests that expect sharedRoomName
+  await editButton.click();
+  await expect(modal).toBeVisible({ timeout: 5000 });
+  await nameInput.clear();
+  await nameInput.fill(sharedRoomName);
+  await page.getByTestId("submit-room-button").click();
   await expect(page.getByText("Salle mise à jour avec succès!")).toBeVisible();
 
   await browser.close();
