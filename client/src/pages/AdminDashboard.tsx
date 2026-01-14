@@ -256,6 +256,7 @@ function AdminDashboard() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => openEditModal(room)}
+                    data-testid={`edit-room-${room.id}`}
                     className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
                   >
                     Modifier
@@ -305,7 +306,10 @@ function AdminDashboard() {
 
         {(showCreateModal || editingRoom) && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+            <div 
+              className="bg-white rounded-lg shadow-xl max-w-md w-full p-6"
+              data-testid="room-modal"
+            >
               <h2 className="text-2xl font-bold text-gray-900 mb-6">
                 {editingRoom ? "Modifier la salle" : "Créer une salle"}
               </h2>
