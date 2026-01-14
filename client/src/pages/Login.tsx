@@ -90,6 +90,7 @@ function Login() {
               <input
                 id="password"
                 type="password"
+                data-testid="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
