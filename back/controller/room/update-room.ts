@@ -9,7 +9,7 @@ export const updateRoom = async (req, res) => {
       return res.status(400).json({ error: "Nom de salle invalide" });
     }
 
-    if (capacity && capacity <= 0) {
+    if (capacity !== undefined && capacity !== null && capacity <= 0) {
       return res.status(400).json({ error: "Capacité de salle invalide" });
     }
 
