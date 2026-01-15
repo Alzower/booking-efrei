@@ -133,6 +133,18 @@
 | 📦 Package Backend  | Dépendances backend            | [back/package.json](./back/package.json)                 |
 | 📦 Package Frontend | Dépendances frontend           | [client/package.json](./client/package.json)             |
 
+### 📊 Rapports de tests
+
+| Document                    | Description                                  | Lien                                                                                                                                     |
+| --------------------------- | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| 📄 Rapport tests unitaires  | Rapport des tests unitaires et d'intégration | [EasyBooking - test rapport unitaire et intégration.pdf](./documents/EasyBooking%20-%20test%20rapport%20unitaire%20et%20intégration.pdf) |
+| 📄 Plan de tests complet    | Plan de tests complet du projet              | [Plan de tests complet.pdf](./documents/Plan%20de%20tests%20complet.pdf)                                                                 |
+| 📄 Rapport tests E2E        | Rapport des tests End-to-End                 | [Test E2E.pdf](./documents/Test%20E2E.pdf)                                                                                               |
+| � Rapport de qualité        | Rapport de qualité du projet                 | [Rapport de qualité.pdf](./documents/Rapport%20de%20qualité.pdf)                                                                         |
+| �🖼️ Capture tests unitaires | Screenshot des tests unitaires réussis       | [unit-test-pass.png](./documents/unit-test-pass.png)                                                                                     |
+| 🖼️ Capture tests E2E        | Screenshot des tests E2E réussis             | [tests-E2E-pass-screen.png](./documents/tests-E2E-pass-screen.png)                                                                       |
+| 🖼️ Capture test brute force | Screenshot du test de sécurité brute force   | [pass-brut-force.png](./documents/pass-brut-force.png)                                                                                   |
+
 ---
 
 ## 📁 Structure du projet
@@ -426,7 +438,7 @@ Pour consulter la liste complète des endpoints disponibles, référez-vous à l
     </td>
     <td align="center">
       <img src="https://via.placeholder.com/100" width="100px;" alt=""/><br />
-      <sub><b>Tran Dang Quang</b></sub><br />
+      <sub><b>Tran Dang Quang LE</b></sub><br />
     </td>
   </tr>
 </table>
