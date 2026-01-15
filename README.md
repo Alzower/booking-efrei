@@ -103,108 +103,47 @@
 
 ---
 
-## 🏗️ Architecture
-
-```mermaid
-graph TB
-    A[Client React] -->|HTTP/JSON| B[Express API]
-    B -->|Prisma ORM| C[(PostgreSQL)]
-    B -->|JWT Auth| D[Middleware]
-    D -->|Verify Token| B
-    E[Tests Sécurité] -.->|Brute Force| B
-```
-
-### 🔧 Stack technique
-
-**Frontend** ([`/client`](./client))
-
-- React 19.2 + TypeScript
-- Vite (Build tool)
-- TailwindCSS 4.1 (Styling)
-- FullCalendar (Interface calendrier)
-- React Router (Navigation)
-
-**Backend** ([`/back`](./back))
-
-- Node.js + Express 5.1
-- TypeScript
-- Prisma ORM
-- PostgreSQL
-- JWT + Bcrypt
-- Express Rate Limit
-
-**Tests** ([`/tests`](./tests))
-
-- Vitest (Unit tests)
-- Python (Security tests)
-
 ---
 
-## 🚀 Démarrage rapide
+## 📚 Documentation
 
-### Prérequis
+### 📖 Documentation du code
 
-- [Node.js](https://nodejs.org/) >= 18.x
-- [PostgreSQL](https://www.postgresql.org/) >= 14.x
-- [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
-- [Python](https://www.python.org/) >= 3.7 (pour tests de sécurité)
+- [**Backend**](./back/README.md) - Documentation de l'API et des contrôleurs
+- [**Frontend**](./client/README.md) - Guide des composants React
+- [**Base de données**](./back/prisma/schema.prisma) - Schéma Prisma
 
-### Installation
+### 🔗 Ressources externes
 
-```bash
-# 1. Cloner le repository
-git clone https://github.com/votre-username/booking-efrei.git
-cd booking-efrei
+- [Documentation Express](https://expressjs.com/)
+- [Documentation React](https://react.dev/)
+- [Documentation Prisma](https://www.prisma.io/docs)
+- [Documentation FullCalendar](https://fullcalendar.io/docs)
+- [Documentation TailwindCSS](https://tailwindcss.com/docs)
 
-# 2. Installer les dépendances backend
-cd back
-npm install
+### 📄 Documents du projet
 
-# 3. Installer les dépendances frontend
-cd ../client
-npm install
-```
+| Document            | Description                    | Lien                                                     |
+| ------------------- | ------------------------------ | -------------------------------------------------------- |
+| 📋 README Principal | Guide principal du projet      | [README.md](./README.md)                                 |
+| 🔧 Backend README   | Documentation de l'API backend | [back/README.md](./back/README.md)                       |
+| ⚛️ Frontend README  | Guide des composants React     | [client/README.md](./client/README.md)                   |
+| 🗄️ Schéma Prisma    | Modèle de base de données      | [back/prisma/schema.prisma](./back/prisma/schema.prisma) |
+| 🐳 Docker Compose   | Configuration des conteneurs   | [docker-compose.yml](./docker-compose.yml)               |
+| 📦 Package Backend  | Dépendances backend            | [back/package.json](./back/package.json)                 |
+| 📦 Package Frontend | Dépendances frontend           | [client/package.json](./client/package.json)             |
 
-### Configuration
+### 📊 Rapports de tests
 
-```bash
-# 1. Créer le fichier .env dans /back
-cd ../back
-cat > .env << EOF
-DATABASE_URL="postgresql://user:password@localhost:5432/booking_efrei"
-JWT_SECRET="votre_secret_jwt_super_securise"
-PORT=3000
-EOF
-
-# 2. Configurer la base de données
-npx prisma migrate dev
-npx prisma generate
-npx prisma db seed  # (optionnel) Données de test
-```
-
-### Lancement
-
-```bash
-# Terminal 1 - Backend (port 3000)
-cd back
-npm run dev
-
-# Terminal 2 - Frontend (port 5173)
-cd client
-npm run dev
-```
-
-🎉 **L'application est accessible sur** → [http://localhost:5173](http://localhost:5173)
-
-### 🐳 Avec Docker Compose
-
-```bash
-# Lancer tous les services
-docker-compose up -d
-
-# Arrêter les services
-docker-compose down
-```
+| Document                    | Description                                  | Lien                                                                                                                                     |
+| --------------------------- | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| 📄 Rapport tests unitaires  | Rapport des tests unitaires et d'intégration | [EasyBooking - test rapport unitaire et intégration.pdf](./documents/EasyBooking%20-%20test%20rapport%20unitaire%20et%20intégration.pdf) |
+| 📄 Plan de tests complet    | Plan de tests complet du projet              | [Plan de tests complet.pdf](./documents/Plan%20de%20tests%20complet.pdf)                                                                 |
+| 📄 Rapport tests E2E        | Rapport des tests End-to-End                 | [Test E2E.pdf](./documents/Test%20E2E.pdf)                                                                                               |
+| � Rapport de qualité        | Rapport de qualité du projet                 | [Rapport de qualité.pdf](./documents/Rapport%20de%20qualité.pdf)                                                                         |
+| �🖼️ Capture tests unitaires | Screenshot des tests unitaires réussis       | [unit-test-pass.png](./documents/unit-test-pass.png)                                                                                     |
+| 🖼️ Capture tests E2E        | Screenshot des tests E2E réussis             | [tests-E2E-pass-screen.png](./documents/tests-E2E-pass-screen.png)                                                                       |
+| 🖼️ Capture test brute force | Screenshot du test de sécurité brute force   | [pass-brut-force.png](./documents/pass-brut-force.png)                                                                                   |
 
 ---
 
@@ -264,65 +203,118 @@ booking-efrei/
 └── 📄 README.md                 # Ce fichier
 ```
 
-### 🔍 Fichiers importants
+## 🏗️ Architecture
 
-| Fichier              | Description                                                                | Lien                                     |
-| -------------------- | -------------------------------------------------------------------------- | ---------------------------------------- |
-| 🔧 Configuration API | [`back/app.ts`](./back/app.ts)                                             | Configuration Express, CORS, middlewares |
-| 🗄️ Modèle de données | [`back/prisma/schema.prisma`](./back/prisma/schema.prisma)                 | Schéma de la base de données             |
-| 🔐 Authentification  | [`back/controller/auth/auth-user.ts`](./back/controller/auth/auth-user.ts) | Logique de connexion/JWT                 |
-| 🛡️ Middleware Auth   | [`back/middleware/userIsAuth.ts`](./back/middleware/userIsAuth.ts)         | Vérification du token JWT                |
-| 📅 Calendrier        | [`client/src/pages/Calendar.tsx`](./client/src/pages/Calendar.tsx)         | Interface de réservation                 |
-| 🔌 Routes API        | [`back/routes/`](./back/routes/)                                           | Toutes les routes de l'API               |
-
----
-
-## 🔧 Configuration
-
-### Variables d'environnement Backend
-
-Créez un fichier [`.env`](./back/.env) dans le dossier `/back` :
-
-```env
-# Base de données
-DATABASE_URL="postgresql://user:password@localhost:5432/booking_efrei"
-
-# JWT
-JWT_SECRET="votre_secret_jwt_tres_securise_minimum_32_caracteres"
-
-# Serveur
-PORT=3000
-NODE_ENV=development
+```mermaid
+graph TB
+    A[Client React] -->|HTTP/JSON| B[Express API]
+    B -->|Prisma ORM| C[(PostgreSQL)]
+    B -->|JWT Auth| D[Middleware]
+    D -->|Verify Token| B
+    E[Tests Sécurité] -.->|Brute Force| B
 ```
 
-### Variables d'environnement Frontend
+### 🔧 Stack technique
 
-Créez un fichier [`.env`](./client/.env) dans le dossier `/client` :
+**Frontend** ([`/client`](./client))
 
-```env
-# URL de l'API backend
-VITE_API_URL=http://localhost:3000/api
+- React 19.2 + TypeScript
+- Vite (Build tool)
+- TailwindCSS 4.1 (Styling)
+- FullCalendar (Interface calendrier)
+- React Router (Navigation)
+
+**Backend** ([`/back`](./back))
+
+- Node.js + Express 5.1
+- TypeScript
+- Prisma ORM
+- PostgreSQL
+- JWT + Bcrypt
+- Express Rate Limit
+
+**Tests** ([`/tests`](./tests))
+
+- Vitest (Unit tests)
+- Python (Security tests)
+
+---
+
+## 🚀 Démarrage rapide
+
+### Prérequis
+
+- [Node.js](https://nodejs.org/) >= 20.x
+- [PostgreSQL](https://www.postgresql.org/) >= 14.x
+- [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
+- [Python](https://www.python.org/) >= 3.7 (pour tests de sécurité)
+
+### Installation
+
+```bash
+# 1. Cloner le repository
+git clone https://github.com/votre-username/booking-efrei.git
+cd booking-efrei
+
+# 2. Installer les dépendances backend
+cd back
+npm install
+
+# 3. Installer les dépendances frontend
+cd ../client
+npm install
 ```
 
----
+### Configuration backend
 
-## 📚 Documentation
+Dans le dossier `/back`, créez le fichier `.env` avec les variables d'environnement suivantes :
 
-### 📖 Documentation du code
+```env
+DATABASE_URL="postgresql://booking_user:booking_password@localhost:5432/booking_db"
+JWT_SECRET="votre_secret_jwt_super_securise_minimum_32_caracteres"
+```
 
-- [**Backend**](./back/README.md) - Documentation de l'API et des contrôleurs
-- [**Frontend**](./client/README.md) - Guide des composants React
-- [**Base de données**](./back/prisma/schema.prisma) - Schéma Prisma
+Si vous souhaitez générer le JWT_SECRET, vous pouvez utiliser la commande suivante dans un terminal Node.js :
 
-### 🔗 Ressources externes
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
 
-- [Documentation Express](https://expressjs.com/)
-- [Documentation React](https://react.dev/)
-- [Documentation Prisma](https://www.prisma.io/docs)
-- [Documentation FullCalendar](https://fullcalendar.io/docs)
-- [Documentation TailwindCSS](https://tailwindcss.com/docs)
+Avant de lancer le backend, vous devez démarrer le conteneur Docker PostgreSQL avec la commande suivante (depuis le dossier racine du projet) :
 
----
+```bash
+docker-compose up -d
+```
+
+Ensuite, initialisez la base de données avec Prisma :
+
+```bash
+npx prisma migrate dev
+npx prisma generate
+npx prisma db seed  # (optionnel) Données de test
+```
+
+❗ **Assurez-vous que vous n'avez pas de PostgreSQL actif sur votre PC. Sinon, les commandes précédentes ne fonctionneront pas.**
+
+## Lancement
+
+### Backend
+
+```bash
+cd back
+npm run dev
+```
+
+📡 **Le serveur API est accessible sur** → [http://localhost:3000](http://localhost:3000)
+
+### Frontend
+
+```bash
+cd client
+npm run dev
+```
+
+🎉 **L'application est accessible sur** → [http://localhost:5173](http://localhost:5173)
 
 ## 🧪 Tests
 
@@ -345,6 +337,13 @@ npm test -- --coverage     # Avec couverture de code
 ```
 
 ### Tests E2E (Playwright)
+
+Avant de lancer les tests E2E, créez un fichier `.env` dans le dossier `/client`. Vous devrez y renseigner l'email et le mot de passe d'un utilisateur admin existant dans la base de données. Vous pouvez utiliser les données de seed.
+
+```env
+ADMIN_EMAIL="admin@booking.com"
+ADMIN_PASSWORD="Admin123!"
+```
 
 ```bash
 cd client
@@ -370,6 +369,7 @@ cd tests/security
 
 # 2. Activer l'environnement virtuel
 source venv/bin/activate
+
 
 # 3. Lancer le test de brute force
 python brute_force.py --email test@example.com
@@ -409,70 +409,20 @@ python brute_force.py --email test@example.com
 
 ## 🌐 API Endpoints
 
-Base URL: `http://localhost:3000/api`
+**Base URL:** `http://localhost:3000/api`
 
-### 🔐 Authentification
+Pour consulter la liste complète des endpoints disponibles, référez-vous à la [documentation backend](./back/README.md).
 
-| Méthode | Endpoint                             | Description           | Auth requise |
-| ------- | ------------------------------------ | --------------------- | ------------ |
-| `POST`  | [`/api/auth`](./back/routes/auth.ts) | Connexion utilisateur | ❌           |
+### Endpoints principaux
 
-**Exemple de requête** :
-
-```bash
-curl -X POST http://localhost:3000/api/auth \
-  -H "Content-Type: application/json" \
-  -d '{"email": "user@example.com", "password": "password123"}'
-```
-
-**Réponse** :
-
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}
-```
-
-### 👤 Utilisateurs
-
-| Méthode  | Endpoint                              | Description              | Auth requise |
-| -------- | ------------------------------------- | ------------------------ | ------------ |
-| `POST`   | [`/api/users`](./back/routes/user.ts) | Créer un utilisateur     | ❌           |
-| `GET`    | `/api/users`                          | Liste des utilisateurs   | ✅           |
-| `GET`    | `/api/users/:id`                      | Détails d'un utilisateur | ✅           |
-| `PUT`    | `/api/users/:id`                      | Modifier un utilisateur  | ✅           |
-| `DELETE` | `/api/users/:id`                      | Supprimer un utilisateur | ✅ Admin     |
-
-### 🏢 Salles
-
-| Méthode  | Endpoint                              | Description         | Auth requise |
-| -------- | ------------------------------------- | ------------------- | ------------ |
-| `GET`    | [`/api/rooms`](./back/routes/room.ts) | Liste des salles    | ❌           |
-| `GET`    | `/api/rooms/:id`                      | Détails d'une salle | ❌           |
-| `POST`   | `/api/rooms`                          | Créer une salle     | ✅ Admin     |
-| `PUT`    | `/api/rooms/:id`                      | Modifier une salle  | ✅ Admin     |
-| `DELETE` | `/api/rooms/:id`                      | Supprimer une salle | ✅ Admin     |
-
-### 📅 Réservations
-
-| Méthode  | Endpoint                                           | Description               | Auth requise |
-| -------- | -------------------------------------------------- | ------------------------- | ------------ |
-| `GET`    | [`/api/reservation`](./back/routes/reservation.ts) | Liste des réservations    | ✅           |
-| `GET`    | `/api/reservation/:id`                             | Détails d'une réservation | ✅           |
-| `POST`   | `/api/reservation`                                 | Créer une réservation     | ✅           |
-| `PUT`    | `/api/reservation/:id`                             | Modifier une réservation  | ✅           |
-| `DELETE` | `/api/reservation/:id`                             | Supprimer une réservation | ✅           |
-
-### 🔑 Authentification des requêtes
-
-Pour les routes protégées, incluez le token JWT dans le header :
-
-```bash
-curl http://localhost:3000/api/reservation \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN"
-```
-
----
+| Catégorie       | Endpoint                  | Description                         |
+| --------------- | ------------------------- | ----------------------------------- |
+| 🔐 Auth         | `POST /api/auth/register` | Inscription d'un nouvel utilisateur |
+| 🔐 Auth         | `POST /api/auth/login`    | Connexion utilisateur               |
+| 👤 Users        | `GET /api/users`          | Liste des utilisateurs              |
+| 🏢 Rooms        | `GET /api/rooms`          | Liste des salles                    |
+| 📅 Reservations | `GET /api/reservations`   | Liste des réservations              |
+| 📅 Reservations | `POST /api/reservations`  | Créer une réservation               |
 
 ## 👥 Contributeurs
 
@@ -488,8 +438,7 @@ curl http://localhost:3000/api/reservation \
     </td>
     <td align="center">
       <img src="https://via.placeholder.com/100" width="100px;" alt=""/><br />
-      <sub><b>Tran Dang Quang</b></sub><br />
+      <sub><b>Tran Dang Quang LE</b></sub><br />
     </td>
   </tr>
 </table>
-
