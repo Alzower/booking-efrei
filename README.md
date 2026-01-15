@@ -123,15 +123,15 @@
 
 ### 📄 Documents du projet
 
-| Document | Description | Lien |
-|----------|-------------|------|
-| 📋 README Principal | Guide principal du projet | [README.md](./README.md) |
-| 🔧 Backend README | Documentation de l'API backend | [back/README.md](./back/README.md) |
-| ⚛️ Frontend README | Guide des composants React | [client/README.md](./client/README.md) |
-| 🗄️ Schéma Prisma | Modèle de base de données | [back/prisma/schema.prisma](./back/prisma/schema.prisma) |
-| 🐳 Docker Compose | Configuration des conteneurs | [docker-compose.yml](./docker-compose.yml) |
-| 📦 Package Backend | Dépendances backend | [back/package.json](./back/package.json) |
-| 📦 Package Frontend | Dépendances frontend | [client/package.json](./client/package.json) |
+| Document            | Description                    | Lien                                                     |
+| ------------------- | ------------------------------ | -------------------------------------------------------- |
+| 📋 README Principal | Guide principal du projet      | [README.md](./README.md)                                 |
+| 🔧 Backend README   | Documentation de l'API backend | [back/README.md](./back/README.md)                       |
+| ⚛️ Frontend README  | Guide des composants React     | [client/README.md](./client/README.md)                   |
+| 🗄️ Schéma Prisma    | Modèle de base de données      | [back/prisma/schema.prisma](./back/prisma/schema.prisma) |
+| 🐳 Docker Compose   | Configuration des conteneurs   | [docker-compose.yml](./docker-compose.yml)               |
+| 📦 Package Backend  | Dépendances backend            | [back/package.json](./back/package.json)                 |
+| 📦 Package Frontend | Dépendances frontend           | [client/package.json](./client/package.json)             |
 
 ---
 
@@ -403,14 +403,14 @@ Pour consulter la liste complète des endpoints disponibles, référez-vous à l
 
 ### Endpoints principaux
 
-| Catégorie | Endpoint | Description |
-|-----------|----------|-------------|
-| 🔐 Auth | `POST /api/auth/register` | Inscription d'un nouvel utilisateur |
-| 🔐 Auth | `POST /api/auth/login` | Connexion utilisateur |
-| 👤 Users | `GET /api/users` | Liste des utilisateurs |
-| 🏢 Rooms | `GET /api/rooms` | Liste des salles |
-| 📅 Reservations | `GET /api/reservations` | Liste des réservations |
-| 📅 Reservations | `POST /api/reservations` | Créer une réservation |
+| Catégorie       | Endpoint                  | Description                         |
+| --------------- | ------------------------- | ----------------------------------- |
+| 🔐 Auth         | `POST /api/auth/register` | Inscription d'un nouvel utilisateur |
+| 🔐 Auth         | `POST /api/auth/login`    | Connexion utilisateur               |
+| 👤 Users        | `GET /api/users`          | Liste des utilisateurs              |
+| 🏢 Rooms        | `GET /api/rooms`          | Liste des salles                    |
+| 📅 Reservations | `GET /api/reservations`   | Liste des réservations              |
+| 📅 Reservations | `POST /api/reservations`  | Créer une réservation               |
 
 ## 👥 Contributeurs
 
