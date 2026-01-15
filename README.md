@@ -171,6 +171,11 @@ booking-efrei/
 │   ├── 📂 prisma/                # Schéma & Migrations
 │   │   ├── 📄 schema.prisma     # Modèle de données
 │   │   └── 📂 migrations/       # Migrations SQL
+│   ├── 📂 tests/                 # Unit tests and Integration tests
+│   │   ├── 📂 auth/             # Auth-user tests
+│   │   └── 📂 reservation/      # Reservation tests
+│   │   └── 📂 room/             # Room tests
+│   │   └── 📂 user/             # User tests
 │   ├── 📄 index.ts              # Point d'entrée
 │   ├── 📄 app.ts                # Configuration Express
 │   └── 📄 package.json          # Dépendances backend
@@ -235,7 +240,8 @@ graph TB
 
 **Tests** ([`/tests`](./tests))
 
-- Vitest (Unit tests)
+- Vitest (Unit tests, Integration tests)
+- Playwright (E2E tests)
 - Python (Security tests)
 
 ---
@@ -318,13 +324,13 @@ npm run dev
 
 ## 🧪 Tests
 
-### Tests unitaires (Backend)
+### Tests unitaires/d'intégration(Backend)
 
 ```bash
 cd back
 npm test                    # Lancer tous les tests
-npm test -- --watch        # Mode watch
-npm test -- --coverage     # Avec couverture de code
+npx vitest --ui             # Mode UI
+npm test:report             # Exporter les tests en Excel
 ```
 
 ### Tests unitaires (Frontend)
