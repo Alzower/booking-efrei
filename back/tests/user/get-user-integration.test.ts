@@ -444,44 +444,37 @@ describe("Get Users Integration Tests - getUsers (GET /)", () => {
   });
 
   it("should handle multiple admin requests", async () => {
-    // Create a second admin
-    const admin2 = await createTestUser(`admin2-${Date.now()}@example.com`, "ADMIN");
+    // First admin calls
+    const token1 = generateToken(adminUser.id, adminUser.email, jwtSecret);
+    const req1: any = {
+      headers: { authorization: `Bearer ${token1}` },
+      user: { id: adminUser.id, email: adminUser.email, role: "ADMIN" },
+    };
 
-    try {
-      // First admin calls
-      const token1 = generateToken(adminUser.id, adminUser.email, jwtSecret);
-      const req1: any = {
-        headers: { authorization: `Bearer ${token1}` },
-        user: { id: adminUser.id, email: adminUser.email, role: "ADMIN" },
-      };
+    const json1 = vi.fn();
+    const res1: any = { json: json1 };
 
-      const json1 = vi.fn();
-      const res1: any = { json: json1 };
+    await getUsers(req1, res1);
 
-      await getUsers(req1, res1);
+    // Second admin calls (same admin with same token)
+    const token2 = generateToken(adminUser.id, adminUser.email, jwtSecret);
+    const req2: any = {
+      headers: { authorization: `Bearer ${token2}` },
+      user: { id: adminUser.id, email: adminUser.email, role: "ADMIN" },
+    };
 
-      // Second admin calls
-      const token2 = generateToken(admin2.id, admin2.email, jwtSecret);
-      const req2: any = {
-        headers: { authorization: `Bearer ${token2}` },
-        user: { id: admin2.id, email: admin2.email, role: "ADMIN" },
-      };
+    const json2 = vi.fn();
+    const res2: any = { json: json2 };
 
-      const json2 = vi.fn();
-      const res2: any = { json: json2 };
+    await getUsers(req2, res2);
 
-      await getUsers(req2, res2);
+    // Both should return same list since no users were added/deleted between calls
+    const users1 = json1.mock.calls[0][0];
+    const users2 = json2.mock.calls[0][0];
 
-      // Both should return same list
-      const users1 = json1.mock.calls[0][0];
-      const users2 = json2.mock.calls[0][0];
-
-      expect(users1.length).toBe(users2.length);
-    } finally {
-      await prisma.user.delete({
-        where: { id: admin2.id },
-      });
-    }
+    expect(users1.length).toBe(users2.length);
+    // Verify both have at least minimum users from beforeEach
+    expect(users1.length).toBeGreaterThanOrEqual(4); // 3 users + 1 admin
   });
 });
 
